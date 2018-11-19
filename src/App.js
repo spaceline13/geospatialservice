@@ -1,28 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import StepZilla from 'react-stepzilla';
+import UploadXL from "./Components/UploadXL";
+import ExcelSheets from "./Components/ExcelSheets";
+import Export from "./Components/Export";
+import Finished from "./Components/Finished";
+import Preview from "./Components/Preview";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+    constructor(props) {
+        super(props);
+        this.state = {
+            excelFile:null,
+            workbook:null,
+            outData:[],
+            outOptions:[],
+            geoJSONpoints:[],
+            output: { SheetNames:[], Sheets:{} }
+        };
+    };
+
+    render() {
+        const steps = [
+            {name: 'Upload Tabular Data', component: <UploadXL parent={this}/>},
+            {name: 'Edit Columns', component: <ExcelSheets parent={this}/>},
+            {name: 'Preview', component: <Preview parent={this}/>},
+            {name: 'Save and Export', component: <Export parent={this}/>},
+            {name: 'Finished', component: <Finished parent={this}/>}
+        ];
+        return (
+            <div>
+                <div className='step-progress'>
+                    <StepZilla stepsNavigation={false} showNavigation={false} steps={steps}/>
+                </div>
+            </div>
+        );
+    };
+};
 
 export default App;

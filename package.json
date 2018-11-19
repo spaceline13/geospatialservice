@@ -3,23 +3,71 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-syntax-jsx": "^7.0.0",
+    "@babel/polyfill": "^7.0.0",
+    "ag-grid-community": "^19.0.0",
+    "ag-grid-react": "^19.0.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "browserify": "^16.2.3",
+    "browserify-shim": "^3.8.14",
+    "customizable-dropdown-react": "^1.2.11",
+    "dom-scroll-into-view": "^1.2.1",
+    "geojson": "^0.5.0",
+    "js-file-download": "^0.4.4",
+    "rc-checkbox": "^2.1.5",
+    "rc-tooltip": "^3.7.3",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "react-select": "^2.1.0",
+    "react-simpler-select": "^3.0.0",
+    "react-stepzilla": "^4.7.2",
+    "react-tabs": "^2.3.0",
+    "react-tag-input": "^6.0.2",
+    "save": "^2.3.2",
+    "sheetjs": "^1.0.21",
+    "superagent": "^4.0.0-beta.5",
+    "xlsx": "^0.14.0"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "webpack --mode=development",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ]
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.4",
+    "css-loader": "^1.0.0",
+    "style-loader": "^0.23.0",
+    "webpack": "4.19.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "3.1.9"
+  }
 }
