@@ -1,9 +1,9 @@
 function validator(format,value){
     var isValid = true;
     if(format=='latitude'){
-        isValid = /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}/.test(value);
+        isValid = /^(-?[1-8]?\d(?:\.\d{1,18})?|90(?:\.0{1,18})?)$/.test(value);
     } else if (format=='longtitude'){
-        isValid = /^-?([1]?[1-7][1-9]|[1]?[1-8][0]|[1-9]?[0-9])\.{1}\d{1,6}/.test(value);
+        isValid = /^(-?(?:1[0-7]|[1-9])?\d(?:\.\d{1,18})?|180(?:\.0{1,18})?)$/.test(value);
     } else if (format=='latclng'){
         isValid = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(value);
     } else if (format=='latlng'){
