@@ -150,15 +150,17 @@ class ExcelSheets extends Component {
     }
     render() {
         return (
-            <div>
+            <div  className='sheetSelection'>
                 {this.state.loaded?
                     <div>
                         {this.state.sheetNames.length > 0 ?
-                            <div>
+                            <div  className="modelArea">
                                 <Tabs onSelect={(index,lastIndex) => { this.saveSheet(lastIndex); this.setState({currentSheet:index})}}>
                                     <TabList>
                                         {this.state.sheetNames.map((name, i) =>
-                                            <Tab key={i}>{name.label}</Tab>
+                                            <Tab key={i}>{name.label}
+                                            <i className="far fa-file" style={{marginLeft:'8px'}}></i>
+                                            </Tab>
                                         )}
                                     </TabList>
                                     {this.state.sheetNames.map((name, i) =>
@@ -175,30 +177,33 @@ class ExcelSheets extends Component {
                                         </TabPanel>
                                     )}
                                 </Tabs>
+                               
+                            <div className='footer'>
                                 {this.state.exportPercent == 0 ?
-                                    <div>
-                                        <button
-                                            style={{float: 'right'}}
-                                            onClick={async () => {
-                                                if (this.state.globalValidHeaders > 0) {
-                                                    this.saveSheet(this.state.currentSheet);
-                                                    var me = this;
-                                                    this.generateExportSheet().then(function () {
-                                                        me.props.jumpToStep(2);
-                                                    });
-                                                }
-                                            }}
-                                            type="button"
-                                            className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) ? '' : 'disabled'}
-                                            disabled={(Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0)}
-                                        >{}next
-                                        </button>
-                                    </div>
-                                :
-                                    <div className="progress-bar blue shine">
-                                        <span style={{width:this.state.exportPercent+'%'}}></span>
-                                    </div>
-                                }
+                                        <div className='button-container'>
+                                                <button
+                                                    style={{float: 'right'}}
+                                                    onClick={async () => {
+                                                        if (this.state.globalValidHeaders > 0) {
+                                                            this.saveSheet(this.state.currentSheet);
+                                                            var me = this;
+                                                            this.generateExportSheet().then(function () {
+                                                                me.props.jumpToStep(2);
+                                                            });
+                                                        }
+                                                    }}
+                                                    type="button"
+                                                    className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) ? 'nextButton' : 'disabled nextButton'}
+                                                    disabled={(Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0)}
+                                                >{}<i className="fas fa-step-forward"></i>
+                                                </button>
+                                        </div>
+                                    :
+                                        <div className="progress-bar blue shine">
+                                            <span style={{width:this.state.exportPercent+'%'}}></span>
+                                        </div>
+                                    }
+                                </div>
                             </div>
                         : <div></div>
                         }

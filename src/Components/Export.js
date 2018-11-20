@@ -99,8 +99,8 @@ class Export extends Component {
     render() {
         return (
             <div>
-                <div style={this.state.loading?{display:'none'}:{display:'block'}}>
-                    <span>
+                <div className='saveAndExportDiv' style={this.state.loading?{display:'none'}:{display:'block'}}>
+                    <span className='saveAndExportSpan'>
                         &nbsp; Select the format you want to export the dataset
                         <Select
                             placeholder="Format"
@@ -110,18 +110,21 @@ class Export extends Component {
                             onChange={(value)=>{this.selectFormat(value)}}
                         />
                     </span>
-                    <div>
-                        <button
-                            style={{float:'right'}}
-                            onClick={()=>{
-                                this.export();
-                                this.props.jumpToStep(4);
-                            }}
-                            disabled={this.state.currentFormat==''}
-                            className={(this.state.currentFormat!='') ? '' : 'disabled'}
-                        >next</button>
-                    </div>
                 </div>
+                    <div className='footer'>
+                        <div className='button-container'>
+                            <button
+                                onClick={()=>{
+                                    this.export();
+                                    this.props.jumpToStep(4);
+                                }}
+                                disabled={this.state.currentFormat==''}
+                                className={(this.state.currentFormat!='') ? 'nextButton' : 'disabled nextButton'}
+                                >
+                                <i className="fas fa-step-forward"></i>
+                            </button>
+                        </div>
+                    </div>
                 <div style={this.state.loading?{display:'block'}:{display:'none'}}>
                     Loading...
                 </div>

@@ -29,11 +29,16 @@ class Preview extends Component {
                         rowData={this.state.rowData}>
                     </AgGridReact>
                 </div>
-                <div>
-                    <button style={{float:'right'}} onClick={()=>{
-                        this.props.parent.setState({outData:formatDataForXLSX(this.state)});
-                        this.props.jumpToStep(3);
-                    }}>next</button>
+                <div className='footer'>
+                    <div className='button-container'>
+                        <button style={{float:'right'}}
+                            className={'nextButton'}
+                            onClick={()=>{
+                            this.props.parent.setState({outData:formatDataForXLSX(this.state)});
+                            this.props.jumpToStep(3);
+                        }}><i className="fas fa-step-forward"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         );

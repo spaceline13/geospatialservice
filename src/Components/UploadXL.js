@@ -16,12 +16,14 @@ class UploadXL extends Component {
     render() {
         return (
             <div>
-                <b>Please Upload your spreadsheet and make sure that it names all the headers in the first row. If There are columns with no header name specified, there will be problems with the functionality.</b>
+                <p className='uploadComponentText'>Please Upload your spreadsheet and make sure that it names all the headers in the first row. If There are columns with no header name specified, there will be problems with the functionality.</p>
                 <DragDropFile handleFile={this.openFile}>
-                    <span style={{}}>&nbsp;or click on the button to browse local files:</span>
+                    <p className='dragDropText2'> or click on the button to browse local files:</p>
                     <DataInput handleFile={this.openFile}/>
                 </DragDropFile>
+                <div className='footer'></div>
             </div>
+            
         );
     };
 };

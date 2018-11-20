@@ -1,5 +1,5 @@
 .styledTable {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: 'Didact Gothic', sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
@@ -32,12 +32,17 @@
 }
 
 .progress-bar {
+    bottom: -30px;
+    left: 50%;
+    
+    position: fixed;
     background-color: #1a1a1a;
     height: 25px;
     padding: 5px;
     width: 350px;
     margin: 50px 0;
     border-radius: 5px;
+    margin-left: -180px;
     box-shadow: 0 1px 5px #000 inset, 0 1px 0 #444;
 }
 
@@ -50,17 +55,17 @@
 }
 
 .blue span {
-    background-color: #34c2e3;
+    background-color: #047832;
 }
 
 .orange span {
-    background-color: #fecf23;
-    background-image: linear-gradient(top, #fecf23, #fd9215);
+    background-color: #F7941D;
+    background-image: linear-gradient(top, #F7941D, #F7941D);
 }
 
 .green span {
-    background-color: #a5df41;
-    background-image: linear-gradient(top, #a5df41, #4ca916);
+    background-color: #047832;
+    background-image: linear-gradient(top, #047832, #047832);
 }
 .shine span {
     position: relative;
@@ -74,7 +79,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: #fff;
+    background: #F7941D;
     border-radius: 3px;
     animation: animate-shine 2s ease-out infinite;
 }
@@ -83,4 +88,253 @@
     0% {opacity: 0; width: 0;}
     50% {opacity: .5;}
     100% {opacity: 0; width: 95%;}
+}
+
+.MainStepArea{
+    position: relative;
+    top: 20px;
+    margin: 0  auto;
+    max-width: 100%;
+    width: 1100px;
+
+}
+
+ol.progtrckr{
+    text-align: center !important;
+    margin-bottom: 40px;
+}
+
+ol.progtrckr li span {
+    padding: 0 1.5rem !important;
+    font-family: 'Didact Gothic', sans-serif;;
+}
+
+.uploadComponentText{
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    padding-left: 20px;
+}
+
+
+.dragDropText{
+    display: inline;
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 18px;
+    position: relative;
+    top: 10px;
+    padding-left: 20px;
+}
+.dragDropText2{
+    display: inline;
+    font-family: 'Didact Gothic', sans-serif;
+    position: relative;
+    top: 10px;
+}
+
+.uploadButton {
+    font-size: 16px;
+    position: relative;
+    top: 10px;
+    right: 15px;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: 600;
+    color: #6D6E71;
+    text-align: center;
+    background-color: #F7941D;
+    border: none;
+    color: white;
+    padding: 4px 15px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-transition: 0.2s linear;
+    -moz-transition: 0.2s linear;
+    -ms-transition: 0.2s linear;
+    -o-transition: 0.2s linear;
+    transition: 0.2s linear;
+}
+.uploadButton:hover{
+    color: #fff;
+    background-color: #047832;
+}
+.inputButton{
+    display: none;
+}
+
+.modelArea{
+    font-family: 'Didact Gothic', sans-serif;
+}
+ .react-tabs__tab-panel input{
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 5px;
+}
+.react-tabs__tab-panel select{
+    font-family: 'Didact Gothic', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 5px;
+    display: inline-block;
+} 
+
+.react-tabs__tab-panel textarea{
+    font-size: 16px;
+    top: 27px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+    height: 39px;
+    margin-left: 5px;
+    width: 200px;
+}
+.react-tabs__tab-panel ul li {
+    margin-bottom: 10px;
+    line-height: 50px;
+    font-size: 18px;
+}
+
+.MuiCheckbox-colorSecondary-86.MuiCheckbox-checked-82{
+    color: #047832 !important;
+}
+
+.nextButton{
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: 600;
+    color: #6D6E71;
+    text-align: center;
+    background-color: #F7941D;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    border: 1px solid #F7941D;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-transition: 0.2s linear;
+    -moz-transition: 0.2s linear;
+    -ms-transition: 0.2s linear;
+    -o-transition: 0.2s linear;
+    transition: 0.2s linear;
+}
+
+.nextButton:hover{
+    background-color: #047832;
+    color: #fff;
+    border: 1px solid #047832;
+  }
+
+    .disabled{
+    cursor: not-allowed;      
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+.disabled:hover{
+    cursor: not-allowed;      
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+}
+.disabled:disabled{
+    cursor: not-allowed;      
+    border: 1px solid #999999;
+    background-color: #cccccc;
+}
+.modelArea ul {
+    padding-left: unset !important;
+}
+
+.ag-theme-balham{
+    font-family: 'Didact Gothic', sans-serif !important;
+}
+
+.ag-theme-balham .ag-header-cell-label{
+    font-size: 20px;
+}
+
+.ag-theme-balham .ag-cell{
+    font-size: 18px;
+    font-family: 'Didact Gothic', sans-serif !important;
+}
+.saveAndExport{
+    font-size: 18px;
+}
+.saveAndExportSpan{
+    font-family: 'Didact Gothic', sans-serif !important;
+    position: relative;
+    top: 13px;
+    vertical-align: middle;
+    left: 50%;
+    margin-left: -350px;
+    font-size: 26px;
+}
+.saveAndExportSpan select{
+    margin-left: 10px;
+    font-size: 22px;
+    padding: 0 20px;
+}
+.finishedSpan{
+    font-family: 'Didact Gothic', sans-serif !important;
+    position: relative;
+    top: 13px;
+    vertical-align: middle;
+    left: 50%;
+    margin-left: -51px;
+    font-size: 26px;
+}
+.MuiIconButton-label-96{
+    position: relative;
+    top: -2px;
+}
+.sheetSelection{
+    height: 60vh;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+}
+.footer{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    background-color: #F5F5F5;
+    bottom: 0px;
+    border-bottom: 10px solid #047832;
+    height: 60px;
+    box-shadow: 0px -2px 4px 1px rgba(0, 0, 0, 0.2), 
+                0px -4px 5px 0px rgba(0, 0, 0, 0.14), 
+                0px -1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.button-container{
+    position: fixed;
+    left: 50%;
+    margin-left: -45.5px;
+    bottom: 17px;
+}
+
+.Toastify__toast-container--top-center{
+    top: 11em !important;
+}
+.Toastify__toast-body{
+    font-size: 130px!important;
+    color: #047832!important;
+    position: relative!important;
+    left: 90px!important;
+}
+
+.Toastify__close-button--default{
+    display: none !important;
 }

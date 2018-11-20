@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import XLSX from 'xlsx';
 import {getHeaders} from '../../lib/dataFormatter';
 import Select from 'react-simpler-select';
-import Checkbox from 'rc-checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
 
 class EditColumns extends Component {
     constructor(props) {
@@ -147,9 +147,10 @@ class EditColumns extends Component {
                                 <ul style={{listStyle: 'none'}} >
                                     {this.state.headers.map((header, i) =>
                                         <li key={i}>
-                                            <Checkbox defaultChecked={header.checked} onChange={(e)=>{this.toggleHeaderLines(e.target.checked,i)}}/>
-                                            <b>{this.generateChar(header)+" ("+header.headerName})</b>&nbsp;
-                                            <span ref={(element)=>this.headerLines[i]=element} style={{display:header.checked?'inline-block':'none'}}>
+                                            <Checkbox defaultChecked={header.checked} 
+                                            onChange={(e)=>{this.toggleHeaderLines(e.target.checked,i)}}/>
+                                            <b className='sheetHeader'>{this.generateChar(header)+" ("+header.headerName})</b>&nbsp;
+                                            <span ref={(element)=>this.headerLines[i]=element} style={{display:header.checked?'inline':'none'}}>
                                                 &nbsp; Select action: &nbsp;
                                                 <Select
                                                     placeholder="Action"
@@ -158,7 +159,7 @@ class EditColumns extends Component {
                                                     onChange={(value)=>{this.selectAction(value,i)}}
                                                 />
                                                 {(header.currentAction=='validate') &&
-                                                    <span>
+                                                    <span style={{display:'inline-block'}}>
                                                         &nbsp; Select the data format of the column: &nbsp;
                                                         <Select
                                                             placeholder="Format"
@@ -169,7 +170,7 @@ class EditColumns extends Component {
                                                     </span>
                                                 }
                                                 {(header.currentAction=='geoNames') &&
-                                                    <span>
+                                                    <span style={{display:'inline-block'}}>
                                                         &nbsp; Select the geoNames field: &nbsp;
                                                         <Select
                                                             placeholder="Field"
@@ -180,7 +181,7 @@ class EditColumns extends Component {
                                                     </span>
                                                 }
                                                 { (geoJSONFields.includes(header.currentFormat)||geoJSONFields.includes(header.currentGeoNamesField)) &&
-                                                    <span>
+                                                    <span style={{display:'inline-block'}}>
                                                         Do you want to use this column for geoJSON generation?
                                                         <Select
                                                             placeholder="Field"
@@ -190,12 +191,13 @@ class EditColumns extends Component {
                                                         />
                                                     </span>
                                                 }
+                                                <hr/>
                                             </span>
+                                            
                                         </li>
                                     )}
                                 </ul>
                             </td>
-
                         </tr>
                         </tbody>
                     </table>

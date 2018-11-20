@@ -5,6 +5,7 @@ import ExcelSheets from "./Components/ExcelSheets";
 import Export from "./Components/Export";
 import Finished from "./Components/Finished";
 import Preview from "./Components/Preview";
+import Header from './Components/Header/Header'
 
 class App extends Component {
     constructor(props) {
@@ -29,7 +30,8 @@ class App extends Component {
         ];
         return (
             <div>
-                <div className='step-progress'>
+                <Header />
+                <div className='step-progress MainStepArea'>
                     <StepZilla stepsNavigation={false} showNavigation={false} steps={steps}/>
                 </div>
             </div>

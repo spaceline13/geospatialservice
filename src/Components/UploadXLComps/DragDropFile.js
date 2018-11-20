@@ -12,7 +12,7 @@ class DragDropFile extends Component {
     };
     render() { return (
         <div style={{minHeight:'50px',border:'1px dotted grey'}} onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
-            Drag n Drop Excel files here
+           <p className='dragDropText'>Drag n Drop Excel files here</p> 
             {this.props.children}
         </div>
     ); };

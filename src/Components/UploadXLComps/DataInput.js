@@ -15,8 +15,11 @@ class DataInput extends Component {
     };
     render() { return (
         <form className="form-inline" style={{float:'right'}}>
-            <div className="form-group">
-                <input type="file" className="form-control" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+            <div className="form-group"> 
+                <label className='uploadButton'>
+                Choose File
+                    <input type="file" className="form-control inputButton" id="file" accept={SheetJSFT} onChange={this.handleChange} />
+                </label>
             </div>
         </form>
     ); };
