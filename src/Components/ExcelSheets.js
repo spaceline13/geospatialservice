@@ -32,6 +32,7 @@ class ExcelSheets extends Component {
         const rABS = !!reader.readAsBinaryString;
         reader.onload = (e) => {
             const excelfile = e.target.result;
+
             const wb = XLSX.read(excelfile, {type:rABS ? 'binary' : 'array'});
             const sheets = [];
             wb.SheetNames.map(function (name, i) { sheets.push({label:name,value:name})});
@@ -42,6 +43,12 @@ class ExcelSheets extends Component {
             this.setState({validSheets: sheets});
             this.setState({loaded:true});
         };
+        reader.onprogress = (data) => {
+            if (data.lengthComputable) {
+                var progress = parseInt( ((data.loaded / data.total) * 100), 10 );
+                console.log(progress);
+            }
+        }
         if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
     };
 
