@@ -8,6 +8,11 @@ function validator(format,value){
         isValid = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(value);
     } else if (format=='latlng'){
         isValid = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(value);
+    } else if((format=='OSM')||(format=='GeoNames')){
+        isValid = value&&(value!='undefined')&&(value!='not valid!');
+    }
+    if(!isValid){
+        console.log('notvails',format,value);
     }
     return isValid;
 }
@@ -28,13 +33,41 @@ export function getHeaders(input,opt){
                 currentAction:curOpt&&curOpt.currentAction?curOpt.currentAction:'',
                 currentFormat:options[i]&&options[i].currentFormat?options[i].currentFormat:'',
                 currentGeoNamesField:options[i]&&options[i].currentGeoNamesField?options[i].currentGeoNamesField:'',
-                cellClassRules: options[i]&&options[i].currentAction=='validate'?{
+                onCellValueChanged :curOpt&&((curOpt.currentAction=='geoNames')||(curOpt.currentAction=='boundaries'))?
+                    function({api,colDef,column,columnApi,context,data,newValue,node,oldValue}){
+                        console.log('vchange:',oldValue,newValue,data,node,colDef,column,api,columnApi,context);
+                        //api.setFocusedCell(0, colDef.headerName);
+                        if(colDef.currentAction=='geoNames'){
+                            fetch('http://api.geonames.org/searchJSON?q='+newValue+'&maxRows=1&username=agroknow').then(function(response) {return response.json();}).then(function(myJson) {
+                                if(myJson.geonames&&myJson.geonames[0]) {
+                                    node.setDataValue(colDef.field+"geonames",myJson.geonames[0][colDef.currentGeoNamesField]);
+                                } else {
+                                    node.setDataValue(colDef.field+"geonames",'not valid!');
+                                }
+                            });
+                        } else if(colDef.currentAction=='boundaries'){
+                            fetch('https://nominatim.openstreetmap.org/search.php?q='+newValue+'&polygon_geojson=1&format=json').then(function(response) {return response.json();}).then(function(myJson) {
+                                if(myJson&&myJson[0]) {
+                                    node.setDataValue(colDef.field+"boundaries",myJson[0]['geojson']);
+                                } else {
+                                    node.setDataValue(colDef.field+"boundaries",'not valid!');
+                                }
+                            });
+                        }
+                        node.setDataValue(colDef.field+"boundaries","the new value");
+                    }
+                :{},
+                cellClassRules: options[i]&&(options[i].currentAction!='export')?{
                     'rag-green-outer': function(params) { return false },
                     'rag-white-outer': function(params) { return false },
-                    'rag-red-outer': function(params) { return (!validator(curOpt.currentFormat,params.value))}
+                    'rag-red-outer': function(params) { return (!validator(params.colDef.currentFormat,params.value))}
                 }:{},
                 cellRenderer: function(params) {
-                    return '<span class="rag-element">'+params.value+'</span>';
+                    if(((typeof params.value)=='object')&&params.value.constructor === {}.constructor){
+                        return '<center><i style="color:#047832" class="fas fa-map-marked-alt"></i></center>';
+                    } else {
+                        return '<span class="rag-element">'+params.value+'</span>';
+                    }
                 }
             };
             output.push(curHeader);

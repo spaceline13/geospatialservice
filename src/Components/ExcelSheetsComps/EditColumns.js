@@ -16,13 +16,15 @@ class EditColumns extends Component {
             }
         }
         this.state = {
-            actions:[{label:'Export As Is', value:'export'},{label:'Link To GeoNames', value:'geoNames'},{label:'Validate', value:'validate'}],
+            actions:[{label:'Export As Is', value:'export'},{label:'Link To GeoNames', value:'geoNames'},{label:'Generate Location/Boundaries', value:'boundaries'},{label:'Validate Coordinates', value:'validate'}],
             formats:[{label:'Latitude', value:'latitude'},{label:'Longtitude', value:'longtitude'},{label:'Lat Long', value:'latlng'},{label:'Lat, Long', value:'latclng'}],
             geoNames:[{label:'Latitude', value:'lat'},{label:'Longtitude', value:"lng"},{label:'GeoNames id', value:'geonameId'},{label:'Toponym', value:'toponymName'},{label:'Country id', value:"countryId"},{label:'FCL', value:"fcl"},{label:'Population', value:"population"},{label:'Country Name', value:"countryName"},{label:'Country Code', value:"countryCode"},{label:'FCL Name', value:"fclName"},{label:'Administration Name', value:"adminName1"},{label:'F Code', value:"fcode"}],
             selectedHeader: null,
             hasBeenEdited:false,
             latColumnGeoJSON:null,
             lngColumnGeoJSON:null,
+            latColIsGeoNamesGenerated:false,
+            lngColIsGeoNamesGenerated:false,
             headers:h
         };
 
@@ -52,6 +54,8 @@ class EditColumns extends Component {
                 } else {
                     this.props.setNonValidHeaders(i,this.props.sheetName,false);
                 }
+            } else if(header.currentAction=='boundaries'){
+                this.props.setNonValidHeaders(i,this.props.sheetName,true);
             } else if(header.currentAction=='validate'){
                 if(header.currentFormat&&header.currentFormat!=''){
                     this.props.setNonValidHeaders(i,this.props.sheetName,true);
@@ -81,7 +85,7 @@ class EditColumns extends Component {
         }
     }
     selectAction(action,i){
-        if(action=='export'){
+        if((action=='export')||(action=='boundaries')){
             this.props.setNonValidHeaders(i,this.props.sheetName,true);
         } else {
             this.props.setNonValidHeaders(i,this.props.sheetName,false);
@@ -109,15 +113,17 @@ class EditColumns extends Component {
                 this.setState({lngColumnGeoJSON:null});
             if(this.state.latColumnGeoJSON==i)
                 this.setState({latColumnGeoJSON:null});
-        } else if(val==1){
+        } else if(val==1){  // if YES, set the coords
             var header = this.state.headers[i];
-            if((header.currentFormat=='latitude')||(header.currentGeoNamesField=='lat')){
+            if(header.currentFormat=='latitude'){  //validate string
                 this.setState({latColumnGeoJSON:i});
-            } else if((header.currentFormat=='longtitude')||(header.currentGeoNamesField=='lng')){
-                this.setState({lngColumnGeoJSON:i},function(){
-                    console.log(this.state.lngColumnGeoJSON);
-                });
-            } else if((header.currentFormat=='latlng')||(header.currentFormat=='latclng')){
+            } else if(header.currentFormat=='longtitude'){ //validate string
+                this.setState({lngColumnGeoJSON:i});
+            } else if(header.currentGeoNamesField=='lat'){ //geonames generated lat
+                this.setState({latColumnGeoJSON:i,latColIsGeoNamesGenerated:true});
+            } else if(header.currentGeoNamesField=='lng'){ //geonames generated long
+                this.setState({lngColumnGeoJSON:i,lngColIsGeoNamesGenerated:true});
+            } else if((header.currentFormat=='latlng')||(header.currentFormat=='latclng')){ // validate both string
                 this.setState({latColumnGeoJSON:i, lngColumnGeoJSON:i});
             }
         }
@@ -178,6 +184,11 @@ class EditColumns extends Component {
                                                             options={this.state.geoNames}
                                                             onChange={(value)=>{this.selectGeoNamesField(value,i)}}
                                                         />
+                                                    </span>
+                                                }
+                                                {(header.currentAction=='boundaries') &&
+                                                    <span style={{display:'inline-block'}}>
+
                                                     </span>
                                                 }
                                                 { (geoJSONFields.includes(header.currentFormat)||geoJSONFields.includes(header.currentGeoNamesField)) &&

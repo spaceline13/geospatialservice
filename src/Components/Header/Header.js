@@ -44,7 +44,7 @@ function DenseAppBar(props) {
             <img src={Logo} width='300'/>
         </div>
           <Typography variant="h4" className={classes.header} >
-         Godan Action Geospatial Service
+         GODAN Action Geospatial Service
           </Typography>
         </Toolbar>
       </AppBar>

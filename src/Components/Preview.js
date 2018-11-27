@@ -5,7 +5,6 @@ import { AgGridReact } from 'ag-grid-react';
 class Preview extends Component {
     constructor(props) {
         super(props);
-        console.log(1,this.props.parent.state.outData);
         this.state = formatDataForReactAggrid(this.props.parent.state.outData,this.props.parent.state.outOptions); //{columnDefs: [],rowData: []}
         this.gridApi = null; //the reference to the grid functions
         this.onGridReady = this.onGridReady.bind(this);

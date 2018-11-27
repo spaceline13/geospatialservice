@@ -18,6 +18,8 @@ class App extends Component {
             geoJSONpoints:[],
             output: { SheetNames:[], Sheets:{} }
         };
+        this.geoJSONpoints = [];
+        this.generatedBoundariesColumn = null;
     };
 
     render() {

@@ -63,9 +63,14 @@ class ExcelSheets extends Component {
                     }
                 }
             }
-            if(headers[this.sheets[sheetName].state.latColumnGeoJSON]&&headers[this.sheets[sheetName].state.lngColumnGeoJSON]) {
-                var geoJSONpoints = [headers[this.sheets[sheetName].state.latColumnGeoJSON]['headerName'], headers[this.sheets[sheetName].state.lngColumnGeoJSON]['headerName']];
-                this.props.parent.setState({geoJSONpoints: geoJSONpoints});
+            var latHeader = this.sheets[sheetName].state.latColumnGeoJSON;
+            var lngHeader = this.sheets[sheetName].state.lngColumnGeoJSON;
+            console.log(headers[latHeader],latHeader,headers[lngHeader],lngHeader,headers);
+            if(headers[latHeader]&&headers[lngHeader]) {
+                var geoJSONpoints = [headers[latHeader]['headerName']+(this.sheets[sheetName].state.latColIsGeoNamesGenerated?' geoNames lat' :""), headers[lngHeader]['headerName']+(this.sheets[sheetName].state.lngColIsGeoNamesGenerated?' geoNames lng':"")];
+                console.log(geoJSONpoints);
+                this.props.parent.geoJSONpoints = geoJSONpoints;
+                console.log(this.props.parent.geoJSONpoints);
             }
             this.editedSheets[name]=headers;
         }
@@ -75,24 +80,40 @@ class ExcelSheets extends Component {
         var content = this.editedSheets;
         var result = [];
         var resultOptions = [];
+        var header = null;
         this.setState({exportPercent:1});
         for(var sheet in content) {
-            //make options array
+            //make options (colDef) array
             for (var column in content[sheet]) {
                 //add header
-                resultOptions.push(content[sheet][column]);
-                //enrich with geonames (make extra column)
-                if(content[sheet][column].currentAction=='geoNames') {
-                    var field = content[sheet][column].field;
-                    var fnumber = field.replace( /^\D+/g, '');
+                header = content[sheet][column];
+                if(header.currentAction=='geoNames'){
+                    //add the colDef
+                    resultOptions.push(header);
+                    //make the new field colDef
+                    var field = header.field;
                     resultOptions.push({
-                        headerName: content[sheet][column].headerName + ' geoNames',
-                        field: field.substring(0,field.length-parseInt(fnumber))+parseInt(fnumber+1),
-                        editable: true
+                        headerName: header.headerName + ' geoNames ' + header['currentGeoNamesField'], //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
+                        field: field+'geonames',
+                        currentFormat: 'GeoNames',
+                        editable: false
                     });
+                } else if(header.currentAction=='boundaries'){
+                    //add the colDef
+                    resultOptions.push(header);
+                    //make the new field colDef
+                    var field = header.field;
+                    resultOptions.push({
+                        headerName: header.headerName + ' geojson',
+                        field: field+'boundaries',
+                        currentFormat: 'OSM',
+                        editable: false
+                    });
+                } else {
+                    resultOptions.push(header);
                 }
             }
-
+            console.log(resultOptions);
             //make data array
             const data = XLSX.utils.sheet_to_json(this.props.parent.state.workbook.Sheets[sheet], {header: 1});
             for(var row in data) {
@@ -104,12 +125,27 @@ class ExcelSheets extends Component {
                     //enrich with geonames (make extra column)
                     if(content[sheet][column].currentAction=='geoNames'){
                         if(row==0){
-                            result[row].push(data[row][column]+' geoNames');
+                            result[row].push(data[row][column]+' geoNames '+content[sheet][column]['currentGeoNamesField']);
                         } else {
                             await fetch('http://api.geonames.org/searchJSON?q='+data[row][column]+'&maxRows=1&username=agroknow').then(function(response) {return response.json();}).then(function(myJson) {
                                 if(myJson.geonames&&myJson.geonames[0]) {
                                    result[row].push(myJson.geonames[0][content[sheet][column]['currentGeoNamesField']]);
-                               }
+                                } else {
+                                    result[row].push('not valid!');
+                                }
+                            });
+                        }
+                    } else if(content[sheet][column].currentAction=='boundaries'){
+                        if(row==0){
+                            this.props.parent.generatedBoundariesColumn = data[row][column]+' geojson';
+                            result[row].push(data[row][column]+' geojson');
+                        } else {
+                            await fetch('https://nominatim.openstreetmap.org/search.php?q='+data[row][column]+'&polygon_geojson=1&format=json').then(function(response) {return response.json();}).then(function(myJson) {
+                                if(myJson&&myJson[0]) {
+                                    result[row].push(myJson[0]['geojson']);
+                                } else {
+                                    result[row].push('not valid!');
+                                }
                             });
                         }
                     }
