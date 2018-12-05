@@ -51,7 +51,6 @@ class Export extends Component {
             }
             output.push(curObj);
         }
-        console.log(this.props.parent);
         if((this.props.parent.geoJSONpoints&&this.props.parent.geoJSONpoints[0]&&this.props.parent.geoJSONpoints[1])){
 
             //if a specific column contains both lat and long

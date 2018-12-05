@@ -42,6 +42,7 @@ class ExcelSheets extends Component {
             this.setState({sheetNames: sheets});
             this.setState({validSheets: sheets});
             this.setState({loaded:true});
+            console.log(wb);
         };
         reader.onprogress = (data) => {
             if (data.lengthComputable) {
@@ -76,6 +77,7 @@ class ExcelSheets extends Component {
         }
     }
     async generateExportSheet(){
+        var me = this;
         //make it for all sheets
         var content = this.editedSheets;
         var result = [];
@@ -90,12 +92,23 @@ class ExcelSheets extends Component {
                 if(header.currentAction=='geoNames'){
                     //add the colDef
                     resultOptions.push(header);
-                    //make the new field colDef
+                    for(var i=0;i<header['currentGeoNamesField'].length;i++){
+                        //make the new field colDef
+                        var field = header.field;
+                        resultOptions.push({
+                            headerName: header['currentGeoNamesField'][i] +': geonames ' +header.headerName, //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
+                            field: field+'geonames'+i, //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
+                            currentFormat: 'GeoNames',
+                            editable: false
+                        });
+                    }
                     var field = header.field;
+                    //geonames url field
                     resultOptions.push({
-                        headerName: header.headerName + ' geoNames ' + header['currentGeoNamesField'], //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
-                        field: field+'geonames',
+                        headerName: 'url: geonames ' + header.headerName,
+                        field: field+'geonamesurl', //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
                         currentFormat: 'GeoNames',
+                        isURL: true,
                         editable: false
                     });
                 } else if(header.currentAction=='boundaries'){
@@ -109,48 +122,101 @@ class ExcelSheets extends Component {
                         currentFormat: 'OSM',
                         editable: false
                     });
+                    //make the url field colDef
+                    var field = header.field;
+                    resultOptions.push({
+                        headerName: 'url: '+ header.headerName + ' geojson',
+                        field: field+'boundariesurl',
+                        currentFormat: 'OSM',
+                        isURL: true,
+                        editable: false
+                    });
                 } else {
                     resultOptions.push(header);
                 }
             }
-            console.log(resultOptions);
             //make data array
             const data = XLSX.utils.sheet_to_json(this.props.parent.state.workbook.Sheets[sheet], {header: 1});
-            for(var row in data) {
-                if(!result[row]) {
-                    result[row] = [];
-                }
-                for (var column in content[sheet]) {
-                    result[row].push(data[row][column]);
-                    //enrich with geonames (make extra column)
-                    if(content[sheet][column].currentAction=='geoNames'){
-                        if(row==0){
-                            result[row].push(data[row][column]+' geoNames '+content[sheet][column]['currentGeoNamesField']);
-                        } else {
-                            await fetch('http://api.geonames.org/searchJSON?q='+data[row][column]+'&maxRows=1&username=agroknow').then(function(response) {return response.json();}).then(function(myJson) {
-                                if(myJson.geonames&&myJson.geonames[0]) {
-                                   result[row].push(myJson.geonames[0][content[sheet][column]['currentGeoNamesField']]);
-                                } else {
-                                    result[row].push('not valid!');
+
+            if(data.length<200) {
+                for (var row in data) {
+                    if (!result[row]) {
+                        result[row] = [];
+                    }
+                    for (var column in content[sheet]) {
+                        result[row].push(data[row][column]);
+                        //enrich with geonames (make extra columns)
+                        if (content[sheet][column].currentAction == 'geoNames') {
+                            //make the headers
+                            if (row == 0) {
+                                for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
+                                    result[row].push(data[row][column] + ' geoNames ' + content[sheet][column]['currentGeoNamesField'][i]);
                                 }
-                            });
-                        }
-                    } else if(content[sheet][column].currentAction=='boundaries'){
-                        if(row==0){
-                            this.props.parent.generatedBoundariesColumn = data[row][column]+' geojson';
-                            result[row].push(data[row][column]+' geojson');
-                        } else {
-                            await fetch('https://nominatim.openstreetmap.org/search.php?q='+data[row][column]+'&polygon_geojson=1&format=json').then(function(response) {return response.json();}).then(function(myJson) {
-                                if(myJson&&myJson[0]) {
-                                    result[row].push(myJson[0]['geojson']);
-                                } else {
+                                result[row].push('url: geonames ' + data[row][column]);
+                                //make the rows
+                            } else {
+                                //if empty field, do not make unnecessary calls
+                                if ((data[row][column] == '') || (!data[row][column])) {
+                                    for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
+                                        result[row].push('not valid!');
+                                    }
                                     result[row].push('not valid!');
+                                    //if is not empty do the calls
+                                } else {
+                                    await fetch('http://api.geonames.org/searchJSON?q=' + data[row][column] + '&maxRows=1&username=agroknow').then(function (response) {
+                                        return response.json();
+                                    }).then(function (myJson) {
+                                        for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
+                                            if (myJson.geonames && myJson.geonames[0]) {
+                                                result[row].push(myJson.geonames[0][content[sheet][column]['currentGeoNamesField'][i]]);
+                                            } else {
+                                                result[row].push('not valid!');
+                                            }
+                                        }
+                                        if (myJson.geonames && myJson.geonames[0]) {
+                                            result[row].push('https://www.geonames.org/' + myJson.geonames[0]['geonameId']);
+                                            me.props.parent.globalGeonamesMatches++; // INCREASE GEONAMES MATCHES COUNTER
+                                        } else {
+                                            result[row].push('not valid!');
+                                        }
+                                    });
                                 }
-                            });
+                            }
+                        } else if (content[sheet][column].currentAction == 'boundaries') {
+                            if (row == 0) {
+                                this.props.parent.generatedBoundariesColumn = data[row][column] + ' geojson';
+                                result[row].push(data[row][column] + ' geojson');
+                                result[row].push('url: ' + data[row][column] + ' geojson');
+                            } else {
+                                //if empty field do not bother making calls
+                                if ((data[row][column] == '') || (!data[row][column])) {
+                                    for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
+                                        result[row].push('not valid!');
+                                    }
+                                    result[row].push('not valid!');
+                                    //if is not empty do the calls
+                                } else {
+                                    await fetch('https://nominatim.openstreetmap.org/search.php?q=' + data[row][column] + '&polygon_geojson=1&format=json').then(function (response) {
+                                        return response.json();
+                                    }).then(function (myJson) {
+                                        if (myJson && myJson[0]) {
+                                            result[row].push(myJson[0]['geojson']);
+                                            result[row].push('https://nominatim.openstreetmap.org/details.php?place_id=' + myJson[0]['place_id']);
+                                            me.props.parent.globalOSMMatches++; //INCREASE OSM MATCHES
+                                        } else {
+                                            result[row].push('not valid!');
+                                            result[row].push('not valid!');
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }
+                    this.setState({exportPercent: row / data.length * 100});
                 }
-                this.setState({exportPercent:row/data.length*100});
+            } else {
+                alert('For the time being only files with less than 200 rows are permitted');
+                window.location.reload();
             }
         }
 
@@ -220,7 +286,7 @@ class ExcelSheets extends Component {
                                         </TabPanel>
                                     )}
                                 </Tabs>
-                               
+
                             <div className='footer'>
                                 {this.state.exportPercent == 0 ?
                                         <div className='button-container'>
@@ -248,10 +314,13 @@ class ExcelSheets extends Component {
                                     }
                                 </div>
                             </div>
-                        : <div></div>
+                        :
+                            <div></div>
                         }
                     </div>
-                    :<div>Loading file...</div>}
+                :
+                    <div>Loading file...</div>
+                }
             </div>
         );
     };

@@ -20,6 +20,8 @@ class App extends Component {
         };
         this.geoJSONpoints = [];
         this.generatedBoundariesColumn = null;
+        this.globalGeonamesMatches=0;
+        this.globalOSMMatches=0;
     };
 
     render() {

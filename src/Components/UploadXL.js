@@ -21,6 +21,7 @@ class UploadXL extends Component {
                     <p className='dragDropText2'> or click on the button to browse local files:</p>
                     <DataInput handleFile={this.openFile}/>
                 </DragDropFile>
+                <p style={{color:'#f7941e'}}> * Your data will not be collected or stored to our servers </p>
                 <div className='footer'></div>
             </div>
             

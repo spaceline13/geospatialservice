@@ -5,7 +5,7 @@ import { AgGridReact } from 'ag-grid-react';
 class Preview extends Component {
     constructor(props) {
         super(props);
-        this.state = formatDataForReactAggrid(this.props.parent.state.outData,this.props.parent.state.outOptions); //{columnDefs: [],rowData: []}
+        this.state = formatDataForReactAggrid(this.props.parent.state.outData,this.props.parent.state.outOptions,this); //{columnDefs: [],rowData: []}
         this.gridApi = null; //the reference to the grid functions
         this.onGridReady = this.onGridReady.bind(this);
     };
@@ -22,6 +22,8 @@ class Preview extends Component {
                         height: '60vh',
                         width: '100%'}}
                 >
+                    <div className={'infobox-preview'}>Number of Geonames matches: <span style={{color:'blue', marginRight:'20px'}}>{this.state.globalGeonamesMatches}</span> Number of boundaries generated: <span style={{color:'green', marginRight:'20px'}}>{this.state.globalOSMMatches} </span> Number of empty fields: <span style={{color:'#c8791a', marginRight:'20px'}}>{this.state.globalEmptyFields}</span> </div>
+
                     <AgGridReact
                         onGridReady={this.onGridReady}
                         columnDefs={this.state.columnDefs}

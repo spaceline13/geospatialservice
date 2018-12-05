@@ -23,27 +23,31 @@ class Finished extends Component {
             <div>
                 <div className='saveAndExportDiv' style={{display:'block'}}>
                     <span className='finishedSpan'>
+                        <button
+                            style={{opacity:0}}
+                            ref={this.clickDiv}
+                            onClick={this.notify}
+                        >Notify !</button>
 
-                    <button 
-                    style={{opacity:0}}
-                    ref={this.clickDiv}
-                    onClick={this.notify}
-                    >Notify !</button>
-
-                    <ToastContainer
-
-                    position="top-center"
-                    autoClose={false}
-                    transition={Zoom}
-                    hideProgressBar={true}
-                    newestOnTop={false}
-                    closeOnClick= {false}
-                    rtl={false}
-                    pauseOnVisibilityChange= {false}
-                    draggable= {false}
-                    pauseOnHover= {false}
-                    />
+                        <ToastContainer
+                            position="top-center"
+                            autoClose={false}
+                            transition={Zoom}
+                            hideProgressBar={true}
+                            newestOnTop={false}
+                            closeOnClick= {false}
+                            rtl={false}
+                            pauseOnVisibilityChange= {false}
+                            draggable= {false}
+                            pauseOnHover= {false}
+                        />
                     </span>
+                    <center style={{marginTop:'150px'}}>
+                        <button
+                            className={'nextButton'}
+                            onClick={(e)=>{window.location.reload()}}
+                        >Run the service again</button>
+                    </center>
                 </div>
                 <div className='footer'></div>
             </div>
