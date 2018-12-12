@@ -84,6 +84,7 @@ class Export extends Component {
                 for (var line=0; line<output.length; line++){
                     latCol = this.props.parent.geoJSONpoints[0];
                     lngCol = this.props.parent.geoJSONpoints[1];
+                    console.log(latCol,lngCol,output[line]);
                     console.log(typeof output[line][latCol]);
                     output[line][latCol] = ((typeof output[line][latCol]) != 'number')&&((typeof output[line][latCol]) != 'undefined') ?
                                                                             parseFloat(output[line][latCol].replace(',', '.'))
@@ -104,26 +105,6 @@ class Export extends Component {
                 var file = new Blob([JSON.stringify(geojson)], {type: 'application/json'});
                 fileDownload(file, 'myGeoJSON.json', );
             });
-        } else if(this.props.parent.generatedBoundariesColumn){
-            console.log(output,data);
-            //make feature collection
-            var geojson = {type: "FeatureCollection", features: []};
-            for (var line=0; line<output.length; line++){
-                var newFeature = {
-                    type: 'Feature',
-                    geometry: output[line][this.props.parent.generatedBoundariesColumn], //geometry polygon etc
-                    properties: {}
-                };
-                //add the columns properties (rest columns that do not contain coords
-                for(var col in output[0]){
-                   // if(col!=this.props.parent.generatedBoundariesColumn)
-                   //     newFeature.properties[output[0]][col] = output[line][col];
-                }
-                geojson.features.push(newFeature);
-            }
-            console.log(geojson);
-            var file = new Blob([JSON.stringify(geojson)], {type: 'application/json'});
-            fileDownload(file, 'myGeoJSON.json', );
         } else {
             alert('You did not select point columns (latitude and longtitude) in the previous steps. Please rerun the app and specify point columns.')
         }
@@ -150,6 +131,7 @@ class Export extends Component {
                     </span>
                 </div>
                     <div className='footer'>
+                        <button className="button-exit" onClick={(e)=>{window.location.reload()}}>Cancel</button>
                         <div className='button-container'>
                             <button
                                 onClick={()=>{

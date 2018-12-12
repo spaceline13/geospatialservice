@@ -28,19 +28,20 @@ class Finished extends Component {
                             ref={this.clickDiv}
                             onClick={this.notify}
                         >Notify !</button>
-
-                        <ToastContainer
-                            position="top-center"
-                            autoClose={false}
-                            transition={Zoom}
-                            hideProgressBar={true}
-                            newestOnTop={false}
-                            closeOnClick= {false}
-                            rtl={false}
-                            pauseOnVisibilityChange= {false}
-                            draggable= {false}
-                            pauseOnHover= {false}
-                        />
+                        <center>
+                            <ToastContainer
+                                position="top-center"
+                                autoClose={false}
+                                transition={Zoom}
+                                hideProgressBar={true}
+                                newestOnTop={false}
+                                closeOnClick= {false}
+                                rtl={false}
+                                pauseOnVisibilityChange= {false}
+                                draggable= {false}
+                                pauseOnHover= {false}
+                            />
+                        </center>
                     </span>
                     <center style={{marginTop:'150px'}}>
                         <button

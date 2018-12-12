@@ -34,7 +34,7 @@
 .progress-bar {
     bottom: -30px;
     left: 50%;
-    
+
     position: fixed;
     background-color: #1a1a1a;
     height: 25px;
@@ -111,12 +111,26 @@ ol.progtrckr li span {
 
 .uploadComponentText{
     font-family: 'Didact Gothic', sans-serif;
-    font-size: 18px;
+    letter-spacing: 0.5px;
     font-weight: 600;
     line-height: 22px;
     padding-left: 20px;
+    border: 1px solid #f7931e;
+    padding: 13px;
 }
-
+.welcomeMessage{
+    font-family: 'Didact Gothic', sans-serif;
+    letter-spacing: 0.5px;
+    padding-left: 0px;
+    line-height: 22px;
+    color: white;
+    font-size: 20px;
+    background: #f7931e;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 30px;
+    font-weight: 200;
+}
 
 .dragDropText{
     display: inline;
@@ -170,7 +184,7 @@ ol.progtrckr li span {
 .modelArea{
     font-family: 'Didact Gothic', sans-serif;
 }
- .react-tabs__tab-panel input{
+.react-tabs__tab-panel input{
     font-family: 'Didact Gothic', sans-serif;
     font-size: 16px;
     font-weight: 600;
@@ -182,7 +196,7 @@ ol.progtrckr li span {
     font-weight: 600;
     margin: 0 5px;
     display: inline-block;
-} 
+}
 
 .react-tabs__tab-panel textarea{
     font-size: 16px;
@@ -235,22 +249,22 @@ ol.progtrckr li span {
     background-color: #047832;
     color: #fff;
     border: 1px solid #047832;
-  }
+}
 
-    .disabled{
-    cursor: not-allowed;      
+.disabled{
+    cursor: not-allowed;
     border: 1px solid #999999;
     background-color: #cccccc;
     color: #666666;
 }
 .disabled:hover{
-    cursor: not-allowed;      
+    cursor: not-allowed;
     border: 1px solid #999999;
     background-color: #cccccc;
     color: #666666;
 }
 .disabled:disabled{
-    cursor: not-allowed;      
+    cursor: not-allowed;
     border: 1px solid #999999;
     background-color: #cccccc;
 }
@@ -292,8 +306,6 @@ ol.progtrckr li span {
     position: relative;
     top: 13px;
     vertical-align: middle;
-    left: 50%;
-    margin-left: -51px;
     font-size: 26px;
 }
 .MuiIconButton-label-96{
@@ -313,18 +325,32 @@ ol.progtrckr li span {
     bottom: 0px;
     border-bottom: 10px solid #047832;
     height: 60px;
-    box-shadow: 0px -2px 4px 1px rgba(0, 0, 0, 0.2), 
-                0px -4px 5px 0px rgba(0, 0, 0, 0.14), 
-                0px -1px 10px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px -2px 4px 1px rgba(0, 0, 0, 0.2),
+    0px -4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px -1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 .button-container{
     position: fixed;
-    left: 50%;
+    left: 70%;
     margin-left: -45.5px;
     bottom: 17px;
 }
-
+.button-exit{
+    left: 30%;
+    padding: 9px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    width: 100px;
+    height: 42px;
+    font-weight: 700;
+    color: #673205;
+    background: #ffc9a9;
+    position: fixed;
+    margin-left: -45.5px;
+    bottom: 17px;
+    cursor: pointer;
+}
 .Toastify__toast-container--top-center{
     top: 11em !important;
 }
@@ -332,7 +358,6 @@ ol.progtrckr li span {
     font-size: 130px!important;
     color: #047832!important;
     position: relative!important;
-    left: 90px!important;
 }
 
 .Toastify__close-button--default{
@@ -367,4 +392,12 @@ ol.progtrckr li span {
     padding: 5px 14px;
     color: #707271;
     font-family: sans-serif;
+}
+
+.colname{
+    text-decoration: underline;
+    margin-left: 16px;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Didact Gothic', sans-serif;
 }

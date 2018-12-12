@@ -11,8 +11,8 @@ class DragDropFile extends Component {
         if(files && files[0]) this.props.handleFile(files[0]);
     };
     render() { return (
-        <div style={{minHeight:'50px',border:'1px dotted grey'}} onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
-           <p className='dragDropText'>Drag n Drop Excel files here</p> 
+        <div style={{minHeight:'100px',border:'1px dotted grey'}} onDrop={this.onDrop} onDragEnter={this.suppress} onDragOver={this.suppress}>
+           <p className='dragDropText'>Drag n Drop your spreadsheet files (xls, xlsx, csv) here </p>
             {this.props.children}
         </div>
     ); };

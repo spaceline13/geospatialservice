@@ -16,12 +16,12 @@ class UploadXL extends Component {
     render() {
         return (
             <div>
-                <p className='uploadComponentText'>Please Upload your spreadsheet and make sure that it names all the headers in the first row. If There are columns with no header name specified, there will be problems with the functionality.</p>
+               <p className='uploadComponentText'>Please Upload your spreadsheet (xls, xlsx or csv) and make sure that all the columns have a name in the first row. Please NOTE that the service will not work correctly if there are no names for the columns in the first row of your file. The max size of the file is 10MB</p>
                 <DragDropFile handleFile={this.openFile}>
                     <p className='dragDropText2'> or click on the button to browse local files:</p>
                     <DataInput handleFile={this.openFile}/>
                 </DragDropFile>
-                <p style={{color:'#f7941e'}}> * Your data will not be collected or stored to our servers </p>
+                <p style={{color:'#f7941e',fontFamily: '"Didact Gothic", sans-serif'}}> * Your data will not be collected or stored to our servers. All the processing of your data is done on your browser (client side). </p>
                 <div className='footer'></div>
             </div>
             

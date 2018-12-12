@@ -16,6 +16,7 @@ class ExcelSheets extends Component {
             globalValidHeaders:0,
             exportPercent:0
         };
+        props.parent.hideWelcomeText();
         this.sheets = [];
         this.editedSheets = [];
         this.openFile = this.openFile.bind(this);
@@ -68,7 +69,7 @@ class ExcelSheets extends Component {
             var lngHeader = this.sheets[sheetName].state.lngColumnGeoJSON;
             console.log(headers[latHeader],latHeader,headers[lngHeader],lngHeader,headers);
             if(headers[latHeader]&&headers[lngHeader]) {
-                var geoJSONpoints = [headers[latHeader]['headerName']+(this.sheets[sheetName].state.latColIsGeoNamesGenerated?' geoNames lat' :""), headers[lngHeader]['headerName']+(this.sheets[sheetName].state.lngColIsGeoNamesGenerated?' geoNames lng':"")];
+                var geoJSONpoints = [(this.sheets[sheetName].state.latColIsGeoNamesGenerated?'lat: geonames ' :"")+headers[latHeader]['headerName'], (this.sheets[sheetName].state.lngColIsGeoNamesGenerated?'lng: geonames ':"")+headers[lngHeader]['headerName']];
                 console.log(geoJSONpoints);
                 this.props.parent.geoJSONpoints = geoJSONpoints;
                 console.log(this.props.parent.geoJSONpoints);
@@ -96,7 +97,7 @@ class ExcelSheets extends Component {
                         //make the new field colDef
                         var field = header.field;
                         resultOptions.push({
-                            headerName: header['currentGeoNamesField'][i] +': geonames ' +header.headerName, //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
+                            headerName: header['currentGeoNamesField'][i] +': geonames ' +header.headerName, //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE FOR EX> SEE NEAR LINE 71 WHERE THE GENERATED LAT LONG COLUMNS ARE SET
                             field: field+'geonames'+i, //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
                             currentFormat: 'GeoNames',
                             editable: false
@@ -259,68 +260,73 @@ class ExcelSheets extends Component {
     }
     render() {
         return (
-            <div  className='sheetSelection'>
-                {this.state.loaded?
-                    <div>
-                        {this.state.sheetNames.length > 0 ?
-                            <div  className="modelArea">
-                                <Tabs onSelect={(index,lastIndex) => { this.saveSheet(lastIndex); this.setState({currentSheet:index})}}>
-                                    <TabList>
+            <div>
+                <p style={{fontFamily:'"Didact Gothic", sans-serif'}}>Select the columns that you need to process and the corresponding process in the drop-down list box</p>
+                <div  className='sheetSelection'>
+                    {this.state.loaded?
+                        <div>
+                            {this.state.sheetNames.length > 0 ?
+                                <div  className="modelArea">
+                                    <Tabs onSelect={(index,lastIndex) => { this.saveSheet(lastIndex); this.setState({currentSheet:index})}}>
+                                        <TabList>
+                                            {this.state.sheetNames.map((name, i) =>
+                                                <Tab key={i}>{name.label}
+                                                <i className="far fa-file" style={{marginLeft:'8px'}}></i>
+                                                </Tab>
+                                            )}
+                                        </TabList>
                                         {this.state.sheetNames.map((name, i) =>
-                                            <Tab key={i}>{name.label}
-                                            <i className="far fa-file" style={{marginLeft:'8px'}}></i>
-                                            </Tab>
+                                            <TabPanel key={i}>
+                                                <div className={'colname'}>Column name</div>
+                                                <EditColumns
+                                                    ref={(rdfSheet) => {this.sheets[i] = rdfSheet}}
+                                                    sheetName={name.label}
+                                                    sheet={this.props.parent.state.workbook.Sheets[name.label]}
+                                                    savedData={this.editedSheets[name.label]}
+                                                    increaseGlobalChecks={this.increaseGlobalChecks}
+                                                    decreaseGlobalChecks={this.decreaseGlobalChecks}
+                                                    setNonValidHeaders={this.setNonValidHeaders}
+                                                />
+                                            </TabPanel>
                                         )}
-                                    </TabList>
-                                    {this.state.sheetNames.map((name, i) =>
-                                        <TabPanel key={i}>
-                                            <EditColumns
-                                                ref={(rdfSheet) => {this.sheets[i] = rdfSheet}}
-                                                sheetName={name.label}
-                                                sheet={this.props.parent.state.workbook.Sheets[name.label]}
-                                                savedData={this.editedSheets[name.label]}
-                                                increaseGlobalChecks={this.increaseGlobalChecks}
-                                                decreaseGlobalChecks={this.decreaseGlobalChecks}
-                                                setNonValidHeaders={this.setNonValidHeaders}
-                                            />
-                                        </TabPanel>
-                                    )}
-                                </Tabs>
+                                    </Tabs>
 
-                            <div className='footer'>
-                                {this.state.exportPercent == 0 ?
-                                        <div className='button-container'>
-                                                <button
-                                                    style={{float: 'right'}}
-                                                    onClick={async () => {
-                                                        if (this.state.globalValidHeaders > 0) {
-                                                            this.saveSheet(this.state.currentSheet);
-                                                            var me = this;
-                                                            this.generateExportSheet().then(function () {
-                                                                me.props.jumpToStep(2);
-                                                            });
-                                                        }
-                                                    }}
-                                                    type="button"
-                                                    className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) ? 'nextButton' : 'disabled nextButton'}
-                                                    disabled={(Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0)}
-                                                >{}<i className="fas fa-step-forward"></i>
-                                                </button>
-                                        </div>
-                                    :
-                                        <div className="progress-bar blue shine">
-                                            <span style={{width:this.state.exportPercent+'%'}}></span>
-                                        </div>
-                                    }
+                                <div className='footer'>
+                                    <button className="button-exit" onClick={(e)=>{window.location.reload()}}>Cancel</button>
+                                    {this.state.exportPercent == 0 ?
+                                            <div className='button-container'>
+                                                    <button
+                                                        style={{float: 'right'}}
+                                                        onClick={async () => {
+                                                            if (this.state.globalValidHeaders > 0) {
+                                                                this.saveSheet(this.state.currentSheet);
+                                                                var me = this;
+                                                                this.generateExportSheet().then(function () {
+                                                                    me.props.jumpToStep(2);
+                                                                });
+                                                            }
+                                                        }}
+                                                        type="button"
+                                                        className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) ? 'nextButton' : 'disabled nextButton'}
+                                                        disabled={(Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0)}
+                                                    >{}<i className="fas fa-step-forward"></i>
+                                                    </button>
+                                            </div>
+                                        :
+                                            <div className="progress-bar blue shine">
+                                                <span style={{width:this.state.exportPercent+'%'}}></span>
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        :
-                            <div></div>
-                        }
-                    </div>
-                :
-                    <div>Loading file...</div>
-                }
+                            :
+                                <div></div>
+                            }
+                        </div>
+                    :
+                        <div>Loading file...</div>
+                    }
+                </div>
             </div>
         );
     };

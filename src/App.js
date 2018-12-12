@@ -16,14 +16,18 @@ class App extends Component {
             outData:[],
             outOptions:[],
             geoJSONpoints:[],
-            output: { SheetNames:[], Sheets:{} }
+            output: { SheetNames:[], Sheets:{} },
+            showWelcomeText: true
         };
+        this.hideWelcomeText = this.hideWelcomeText.bind(this);
         this.geoJSONpoints = [];
         this.generatedBoundariesColumn = null;
         this.globalGeonamesMatches=0;
         this.globalOSMMatches=0;
     };
-
+    hideWelcomeText(){
+        this.setState({showWelcomeText:false});
+    }
     render() {
         const steps = [
             {name: 'Upload Tabular Data', component: <UploadXL parent={this}/>},
@@ -32,9 +36,14 @@ class App extends Component {
             {name: 'Save and Export', component: <Export parent={this}/>},
             {name: 'Finished', component: <Finished parent={this}/>}
         ];
+        // hide header for era purposes <Header />
         return (
             <div>
-                <Header />
+                {this.state.showWelcomeText &&
+                    <center><p className={'welcomeMessage'}>Welcome to the GODAN Action Geospatial Service. Use the service to upload, process and enrich your
+                    dataset with geospatial information. Download the enriched dataset in a format that is compatible
+                    with GIS and mapping tools.</p></center>
+                }
                 <div className='step-progress MainStepArea'>
                     <StepZilla stepsNavigation={false} showNavigation={false} steps={steps}/>
                 </div>

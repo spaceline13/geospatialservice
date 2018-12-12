@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {formatDataForReactAggrid, formatDataForXLSX} from "../lib/dataFormatter";
 import { AgGridReact } from 'ag-grid-react';
 
@@ -31,6 +32,7 @@ class Preview extends Component {
                     </AgGridReact>
                 </div>
                 <div className='footer'>
+                    <button className="button-exit" onClick={(e)=>{window.location.reload()}}>Cancel</button>
                     <div className='button-container'>
                         <button style={{float:'right'}}
                             className={'nextButton'}

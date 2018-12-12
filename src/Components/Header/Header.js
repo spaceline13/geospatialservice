@@ -17,7 +17,6 @@ const styles = {
   header:{
     position:'relative',
     left: '50%',
-    marginLeft:'50px',
     paddingTop: 20,
     paddingBottom: 20,
     color: '#c9791b',
@@ -29,7 +28,7 @@ const styles = {
   logo:{
     position:'relative',
     left: '50%',
-    marginLeft:'-350px'
+    marginLeft:'-430px'
   }
 };
 
