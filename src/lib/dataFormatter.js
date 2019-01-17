@@ -1,3 +1,5 @@
+import countryInfo from 'countryinfo';
+
 function validator(format,value){
     var isValid = true;
     if(format=='latitude'){
@@ -43,16 +45,24 @@ export function getHeaders(input,opt,parent){
                                 node.setDataValue(colDef.field + "geonamesurl", 'not valid!');
                                 //if is not empty do the calls
                             } else {
-                                fetch('http://api.geonames.org/searchJSON?q=' + newValue + '&maxRows=1&username=agroknow').then(function (response) {
+                                fetch('http://ws.geonames.net/searchJSON?q=' + newValue + '&maxRows=1&username=agroknow1&token=y2TRxlWf').then(function (response) {
                                     return response.json();
                                 }).then(function (myJson) {
                                     for (var i = 0; i < colDef.currentGeoNamesField.length; i++) {
                                         if (myJson.geonames && myJson.geonames[0]) {
                                             node.setDataValue(colDef.field + "geonames" + i, myJson.geonames[0][colDef.currentGeoNamesField[i]]);
+                                            //isocodes3 on change
+                                            if(colDef.currentGeoNamesField[i]=="countryCode")
+                                                node.setDataValue(colDef.field+'isoalpha3', countryInfo.iso3(myJson.geonames[0][colDef.currentGeoNamesField[i]]));
                                         } else {
                                             node.setDataValue(colDef.field + "geonames" + i, 'not valid!');
+                                            //isocodes3 on change
+                                            if(colDef.currentGeoNamesField[i]=="countryCode")
+                                                node.setDataValue(colDef.field+'isoalpha3', 'not valid!');
                                         }
                                     }
+
+                                    //url on change
                                     if (myJson.geonames && myJson.geonames[0]) {
                                         if(parent&&(data[colDef.field+'geonamesurl']=='not valid!')) //GLOBAL GEONAMES MATCHES
                                             parent.setState({globalGeonamesMatches:parent.state.globalGeonamesMatches+1});
@@ -88,9 +98,9 @@ export function getHeaders(input,opt,parent){
                     }
                 :{},
                 cellClassRules: options[i]?{
-                    'rag-yellow-outer': function(params) { return (params.value=='')||(!params.value) },
                     'rag-white-outer': function(params) { return false },
-                    'rag-red-outer': function(params) { return (!validator(params.colDef.currentFormat,params.value)) }
+                    'rag-red-outer': function(params) { return (!validator(params.colDef.currentFormat,params.value)) },
+                    'rag-yellow-outer': function(params) { return (params.value=='')||(!params.value) }
                 }:{},
                 cellRenderer: function(params) {
                     if(((typeof params.value)=='object')&&params.value.constructor === {}.constructor){

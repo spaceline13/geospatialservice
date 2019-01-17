@@ -25,7 +25,7 @@ class Finished extends Component {
                     <span className='finishedSpan'>
                         <button
                             style={{opacity:0}}
-                            ref={this.clickDiv}
+                            ref={(el)=>{this.clickDiv(el)}}
                             onClick={this.notify}
                         >Notify !</button>
                         <center>

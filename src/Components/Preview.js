@@ -28,7 +28,8 @@ class Preview extends Component {
                     <AgGridReact
                         onGridReady={this.onGridReady}
                         columnDefs={this.state.columnDefs}
-                        rowData={this.state.rowData}>
+                        rowData={this.state.rowData}
+                        enableColResize={true}>
                     </AgGridReact>
                 </div>
                 <div className='footer'>

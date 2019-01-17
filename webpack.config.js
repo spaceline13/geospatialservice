@@ -36,7 +36,10 @@ module.exports = {
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {}
+                        query: {
+                            publicPath: '/static/godan/',
+                            outputPath: '/static/godan/'
+                        }
                     }
                 ]
             }

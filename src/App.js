@@ -39,13 +39,14 @@ class App extends Component {
         // hide header for era purposes <Header />
         return (
             <div>
+                {this.props.showHeader && <Header/>}
                 {this.state.showWelcomeText &&
                     <center><p className={'welcomeMessage'}>Welcome to the GODAN Action Geospatial Service. Use the service to upload, process and enrich your
                     dataset with geospatial information. Download the enriched dataset in a format that is compatible
                     with GIS and mapping tools.</p></center>
                 }
                 <div className='step-progress MainStepArea'>
-                    <StepZilla stepsNavigation={false} showNavigation={false} steps={steps}/>
+                    <StepZilla onStepChange={(step)=>{console.log(step);}} stepsNavigation={false} showNavigation={false} steps={steps}/>
                 </div>
             </div>
         );

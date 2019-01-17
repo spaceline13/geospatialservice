@@ -4,6 +4,17 @@ import {getHeaders} from '../../lib/dataFormatter';
 import Select from 'react-simpler-select';
 import ReactResponsiveSelect from 'react-responsive-select';
 import Checkbox from '@material-ui/core/Checkbox';
+import ReactModal from 'react-modal';
+const GeonamesModalStyles = {
+    content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+    }
+};
 const caretIcon = (
     <svg
         className="caret-icon"
@@ -61,18 +72,18 @@ class EditColumns extends Component {
             actions:[{label:'Export As Is', value:'export'},{label:'Link To GeoNames', value:'geoNames'},{label:'Generate Location/Boundaries', value:'boundaries'},{label:'Validate Coordinates', value:'validate'}],
             formats:[{label:'Latitude', value:'latitude'},{label:'Longtitude', value:'longtitude'},{label:'Lat Long', value:'latlng'},{label:'Lat, Long', value:'latclng'}],
             geoNames:[
+                {markup: multiSelectOptionMarkup('Please Select'),text:'Please Select', value:null},
+                {markup: multiSelectOptionMarkup('GeoNames id'),text:'GeoNames id', value:'geonameId'},
                 {markup: multiSelectOptionMarkup('Latitude'),text:'Latitude', value:'lat'},
                 {markup: multiSelectOptionMarkup('Longtitude'),text:'Longtitude', value:"lng"},
-                {markup: multiSelectOptionMarkup('GeoNames id'),text:'GeoNames id', value:'geonameId'},
                 {markup: multiSelectOptionMarkup('Toponym'),text:'Toponym', value:'toponymName'},
                 {markup: multiSelectOptionMarkup('Country id'),text:'Country id', value:"countryId"},
-                {markup: multiSelectOptionMarkup('FCL'),text:'FCL', value:"fcl"},
                 {markup: multiSelectOptionMarkup('Population'),text:'Population', value:"population"},
                 {markup: multiSelectOptionMarkup('Country Name'),text:'Country Name', value:"countryName"},
                 {markup: multiSelectOptionMarkup('Country Code'),text:'Country Code', value:"countryCode"},
-                {markup: multiSelectOptionMarkup('FCL Name'),text:'FCL Name', value:"fclName"},
+                {markup: multiSelectOptionMarkup('Facility'),text:'Facility', value:"fclName"},
                 {markup: multiSelectOptionMarkup('Administration Name'),text:'Administration Name', value:"adminName1"},
-                {markup: multiSelectOptionMarkup('F Code'),text:'F Code', value:"fcode"}
+                {markup: multiSelectOptionMarkup('Feature Code'),text:'Feature Code', value:"fcode"},
             ],
             selectedHeader: null,
             hasBeenEdited:false,
@@ -80,10 +91,11 @@ class EditColumns extends Component {
             lngColumnGeoJSON:null,
             latColIsGeoNamesGenerated:false,
             lngColIsGeoNamesGenerated:false,
+            showGeonamesInfoModal: false,
             headers:h
         };
 
-        this.char = 'A';
+        this.char = 1;
         this.headerLines = [];
         this.editHeader = this.editHeader.bind(this);
         this.toggleHeaderLines = this.toggleHeaderLines.bind(this);
@@ -91,6 +103,8 @@ class EditColumns extends Component {
         this.setGeoJSONCoordinates = this.setGeoJSONCoordinates.bind(this);
         this.generateChar = this.generateChar.bind(this);
         this.checkAndSetValidHeaders = this.checkAndSetValidHeaders.bind(this);
+        this.handleOpenGeonamesInfoModal = this.handleOpenGeonamesInfoModal.bind(this);
+        this.handleCloseGeonamesInfoModal = this.handleCloseGeonamesInfoModal.bind(this);
     };
     editHeader(header,field,value) {
         var h = this.state.headers;
@@ -129,6 +143,8 @@ class EditColumns extends Component {
             this.checkAndSetValidHeaders(i); //check if it will be set to valid or not and set it
             this.headerLines[i].style.display='inline-block';
             this.editHeader(i,'checked',true);
+            //export as is as default
+            this.selectAction('export',i);
             //this.state.headers[i].checked=true;
             this.props.increaseGlobalChecks();
         }else{
@@ -147,20 +163,27 @@ class EditColumns extends Component {
         }
         this.setState({selectedHeader:i});
         this.editHeader(i,'currentFormat','');
-        this.editHeader(i,'currentGeoNamesField',[]);
+        if(action=='geoNames')
+            this.editHeader(i,'currentGeoNamesField',[null]);
+        else
+            this.editHeader(i,'currentGeoNamesField',[]);
         this.editHeader(i,'currentAction',action);
         this.setState({hasBeenEdited:true});
     }
     selectGeoNamesField(field,i){ //link to geonames
         if(field.altered) {
+            console.log(1,field,i);
             this.props.setNonValidHeaders(i, this.props.sheetName, true);
             this.setState({selectedHeader: i});
             var values = field.options.map(function (item) {
                 return item["value"];
             });
             this.editHeader(i, 'currentGeoNamesField', values);
+            if((values.length==1)&&(!values[0]))
+                this.props.setNonValidHeaders(i, this.props.sheetName, false);
         } else {
-            this.props.setNonValidHeaders(i, this.props.sheetName, false);
+            if(field.options.length==0)
+                this.props.setNonValidHeaders(i, this.props.sheetName, false);
         }
     }
     selectFormat(format,i){ //validate
@@ -194,15 +217,24 @@ class EditColumns extends Component {
     }
     generateChar(i){
         //get letter to generate
-        var c = this.char;
-        //increment letter
-        var lastC = c.substr(c.length - 1);
-        if(lastC=='Z'){
-            this.char=this.char.substr(0,c.length-1)+'AA';
+        return this.getNameFromNumber(i+1);
+    }
+    getNameFromNumber(num) {
+        var numeric = (num - 1) % 26;
+        var letter = String.fromCharCode(65 + numeric);
+        var num2 = parseInt((num - 1) / 26);
+        if (num2 > 0) {
+            return this.getNameFromNumber(num2) + letter;
         } else {
-            this.char=this.char.substr(0,c.length-1)+String.fromCharCode(lastC.charCodeAt(0)+1);
+            return letter;
         }
-        return c;
+    }
+    handleOpenGeonamesInfoModal () {
+        this.setState({ showGeonamesInfoModal: true });
+    }
+
+    handleCloseGeonamesInfoModal () {
+        this.setState({ showGeonamesInfoModal: false });
     }
     render() {
         var geoJSONFields = ['latitude','longtitude','latlng','latclng','lat','lng',];
@@ -219,7 +251,7 @@ class EditColumns extends Component {
                                         <li key={i}>
                                             <Checkbox defaultChecked={header.checked} 
                                             onChange={(e)=>{this.toggleHeaderLines(e.target.checked,i)}}/>
-                                            <b className='sheetHeader'>{this.generateChar(header)+" ("+header.headerName})</b>&nbsp;
+                                            <b className='sheetHeader'>{this.generateChar(i)+" ("+header.headerName})</b>&nbsp;
                                             <span ref={(element)=>this.headerLines[i]=element} style={{display:header.checked?'inline':'none'}}>
                                                 &nbsp; Select action: &nbsp;
                                                 <Select
@@ -248,12 +280,12 @@ class EditColumns extends Component {
                                                         <ReactResponsiveSelect
                                                             multiselect
                                                             name="geonames"
-                                                            noSelectionLabel="Please select field"
                                                             options={this.state.geoNames}
                                                             caretIcon={caretIcon}
                                                             selectedValues={header.currentGeoNamesField}
                                                             onChange={(value)=>{console.log(value);this.selectGeoNamesField(value,i)}}
                                                         />
+                                                        &nbsp;<a style={{cursor:'pointer',color:'green'}} onClick={this.handleOpenGeonamesInfoModal} title={'Info about GeoNames fields'}><i className="fa fa-question"></i></a>
                                                     </span>
                                                 }
                                                 {(header.currentAction=='boundaries') &&
@@ -262,7 +294,7 @@ class EditColumns extends Component {
                                                     </span>
                                                 }
                                                 { (geoJSONFields.includes(header.currentFormat)||header.currentGeoNamesField.some(field=> geoJSONFields.includes(field))) &&
-                                                    <span style={{display:'inline-block'}}>
+                                                    <div className={'geoJSON-generation-subdiv'}>
                                                         This is lat/long coordinates column(s) that I want to use for geoJSON generation:
                                                         <Select
                                                             className={'godanSelect'}
@@ -271,7 +303,7 @@ class EditColumns extends Component {
                                                             options={[{label:'No',value:0},{label:'Yes',value:1}]}
                                                             onChange={(value)=>{this.setGeoJSONCoordinates(value,i)}}
                                                         />
-                                                    </span>
+                                                    </div>
                                                 }
                                                 <hr/>
                                             </span>
@@ -283,7 +315,31 @@ class EditColumns extends Component {
                         </tr>
                         </tbody>
                     </table>
-                    :<div>No headers to show</div>}
+                :
+                    <div>No headers to show</div>
+                }
+                <ReactModal
+                    isOpen={this.state.showGeonamesInfoModal}
+                    contentLabel="onRequestClose Example"
+                    onRequestClose={this.handleCloseGeonamesInfoModal}
+                    shouldCloseOnOverlayClick={true}
+                    style={GeonamesModalStyles}
+                >
+
+                    <button style={{border:'1px solid grey',borderRadius:'5px',background:'white',cursor:'pointer', float:'right'}} onClick={this.handleCloseGeonamesInfoModal}>x</button>
+                    <p>
+                        GeoNames id	: integer id of record in geonames database <br/>
+                        Latitude	: latitude in decimal degrees (wgs84)<br/>
+                        Longtitude	: longitude in decimal degrees (wgs84)<br/>
+                        Toponym		: toponym of the area in string format<br/>
+                        Country id	: integer of the GeoNames id of the country where the area belongs<br/>
+                        Population        : the population of the area in bigint (8 byte int) <br/>
+                        Country Name	: name of the country where the area belongs in string format<br/>
+                        Country Code      : ISO-3166 2-letter country code, 2 characters<br/>
+                        Facility	: a building or buildings housing a center, institute, foundation, hospital, prison, mission, courthouse, etc. <br/>
+                        Administration Name	: administration level one Name<br/>
+                    </p>
+                </ReactModal>
             </div>
         );
     };

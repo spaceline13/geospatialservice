@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import XLSX from 'xlsx';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import EditColumns from './ExcelSheetsComps/EditColumns';
+import Tooltip from 'react-tooltip-lite';
+import {createfetchUnlessCached} from "fetch-unless-cached"
+import countryInfo from 'countryinfo';
 
 class ExcelSheets extends Component {
     constructor(props) {
@@ -13,6 +16,7 @@ class ExcelSheets extends Component {
             loaded: false,
             nonValidSheets:[],
             nonValidHeaders:[],
+            disableNextButton:false,
             globalValidHeaders:0,
             exportPercent:0
         };
@@ -43,12 +47,12 @@ class ExcelSheets extends Component {
             this.setState({sheetNames: sheets});
             this.setState({validSheets: sheets});
             this.setState({loaded:true});
-            console.log(wb);
+            //console.log(wb);
         };
         reader.onprogress = (data) => {
             if (data.lengthComputable) {
                 var progress = parseInt( ((data.loaded / data.total) * 100), 10 );
-                console.log(progress);
+                //console.log(progress);
             }
         }
         if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
@@ -67,17 +71,21 @@ class ExcelSheets extends Component {
             }
             var latHeader = this.sheets[sheetName].state.latColumnGeoJSON;
             var lngHeader = this.sheets[sheetName].state.lngColumnGeoJSON;
-            console.log(headers[latHeader],latHeader,headers[lngHeader],lngHeader,headers);
+            //console.log(headers[latHeader],latHeader,headers[lngHeader],lngHeader,headers);
             if(headers[latHeader]&&headers[lngHeader]) {
                 var geoJSONpoints = [(this.sheets[sheetName].state.latColIsGeoNamesGenerated?'lat: geonames ' :"")+headers[latHeader]['headerName'], (this.sheets[sheetName].state.lngColIsGeoNamesGenerated?'lng: geonames ':"")+headers[lngHeader]['headerName']];
-                console.log(geoJSONpoints);
+               // console.log(geoJSONpoints);
                 this.props.parent.geoJSONpoints = geoJSONpoints;
-                console.log(this.props.parent.geoJSONpoints);
+              //  console.log(this.props.parent.geoJSONpoints);
             }
             this.editedSheets[name]=headers;
         }
     }
+
+    cachedFetch = createfetchUnlessCached(150); // 150 minutes
+
     async generateExportSheet(){
+        //this is just for generation of the export sheets, for the preview step look at /lib/dataformatter
         var me = this;
         //make it for all sheets
         var content = this.editedSheets;
@@ -102,9 +110,20 @@ class ExcelSheets extends Component {
                             currentFormat: 'GeoNames',
                             editable: false
                         });
+                        if(header['currentGeoNamesField'][i]=='countryCode'){
+                            //alpha3 codes
+                            var field = header.field;
+                            resultOptions.push({
+                                headerName: header['currentGeoNamesField'][i] +' iso3: geonames ' +header.headerName,
+                                field: field+'isoalpha3', //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
+                                currentFormat: 'GeoNames',
+                                editable: false
+                            });
+                        }
                     }
-                    var field = header.field;
+
                     //geonames url field
+                    var field = header.field;
                     resultOptions.push({
                         headerName: 'url: geonames ' + header.headerName,
                         field: field+'geonamesurl', //WARNIGN!!!DO NOT EVER CHANGE THAT LINE SINCE THE NAME IS USED IN MANY PLACES IN THE CODE
@@ -139,7 +158,7 @@ class ExcelSheets extends Component {
             //make data array
             const data = XLSX.utils.sheet_to_json(this.props.parent.state.workbook.Sheets[sheet], {header: 1});
 
-            if(data.length<200) {
+            //if(data.length<1000) {
                 for (var row in data) {
                     if (!result[row]) {
                         result[row] = [];
@@ -151,7 +170,10 @@ class ExcelSheets extends Component {
                             //make the headers
                             if (row == 0) {
                                 for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
-                                    result[row].push(data[row][column] + ' geoNames ' + content[sheet][column]['currentGeoNamesField'][i]);
+                                    result[row].push(content[sheet][column]['currentGeoNamesField'][i] +': geoNames ' +data[row][column])
+                                    if(content[sheet][column]['currentGeoNamesField'][i]=='countryCode') {
+                                        result[row].push(content[sheet][column]['currentGeoNamesField'][i] +' iso3: geonames ' +data[row][column]);
+                                    }
                                 }
                                 result[row].push('url: geonames ' + data[row][column]);
                                 //make the rows
@@ -164,18 +186,22 @@ class ExcelSheets extends Component {
                                     result[row].push('not valid!');
                                     //if is not empty do the calls
                                 } else {
-                                    await fetch('http://api.geonames.org/searchJSON?q=' + data[row][column] + '&maxRows=1&username=agroknow').then(function (response) {
-                                        return response.json();
-                                    }).then(function (myJson) {
+                                    await this.cachedFetch('http://ws.geonames.net/searchJSON?q=' + data[row][column] + '&maxRows=1&username=agroknow1&token=y2TRxlWf').then(response => {
                                         for (var i = 0; i < content[sheet][column]['currentGeoNamesField'].length; i++) {
-                                            if (myJson.geonames && myJson.geonames[0]) {
-                                                result[row].push(myJson.geonames[0][content[sheet][column]['currentGeoNamesField'][i]]);
+                                            if (response.geonames && response.geonames[0]) {
+                                                result[row].push(response.geonames[0][content[sheet][column]['currentGeoNamesField'][i]]);
+                                                if(content[sheet][column]['currentGeoNamesField'][i]=='countryCode'){
+                                                    if(response.geonames[0][content[sheet][column]['currentGeoNamesField'][i]])
+                                                        result[row].push(countryInfo.iso3(response.geonames[0][content[sheet][column]['currentGeoNamesField'][i]]));
+                                                    else
+                                                        result[row].push('');
+                                                }
                                             } else {
                                                 result[row].push('not valid!');
                                             }
                                         }
-                                        if (myJson.geonames && myJson.geonames[0]) {
-                                            result[row].push('https://www.geonames.org/' + myJson.geonames[0]['geonameId']);
+                                        if (response.geonames && response.geonames[0]) {
+                                            result[row].push('https://www.geonames.org/' + response.geonames[0]['geonameId']);
                                             me.props.parent.globalGeonamesMatches++; // INCREASE GEONAMES MATCHES COUNTER
                                         } else {
                                             result[row].push('not valid!');
@@ -197,32 +223,33 @@ class ExcelSheets extends Component {
                                     result[row].push('not valid!');
                                     //if is not empty do the calls
                                 } else {
-                                    await fetch('https://nominatim.openstreetmap.org/search.php?q=' + data[row][column] + '&polygon_geojson=1&format=json').then(function (response) {
-                                        return response.json();
-                                    }).then(function (myJson) {
-                                        if (myJson && myJson[0]) {
-                                            result[row].push(myJson[0]['geojson']);
-                                            result[row].push('https://nominatim.openstreetmap.org/details.php?place_id=' + myJson[0]['place_id']);
+                                    await this.cachedFetch('https://nominatim.openstreetmap.org/search.php?q=' + data[row][column] + '&polygon_geojson=1&format=json').then(response => {
+                                        if (response && response[0]) {
+                                            result[row].push(response[0]['geojson']);
+                                            result[row].push('https://nominatim.openstreetmap.org/details.php?place_id=' + response[0]['place_id']);
                                             me.props.parent.globalOSMMatches++; //INCREASE OSM MATCHES
                                         } else {
                                             result[row].push('not valid!');
                                             result[row].push('not valid!');
                                         }
                                     });
+                                    /*await fetch('https://nominatim.openstreetmap.org/search.php?q=' + data[row][column] + '&polygon_geojson=1&format=json').then(function (response) {
+                                        return response.json();
+                                    })*/
                                 }
                             }
                         }
                     }
                     this.setState({exportPercent: row / data.length * 100});
                 }
-            } else {
-                alert('For the time being only files with less than 200 rows are permitted');
-                window.location.reload();
-            }
+            //} else {
+            //    alert('For the time being only files with less than 200 rows are permitted');
+            //    window.location.reload();
+            //}
         }
-
         this.props.parent.setState({outOptions:resultOptions});
         this.props.parent.setState({outData:result});
+        console.log(resultOptions,result);
     }
     setNonValidHeaders(i,sheet,isValid){
         var newNonValid = this.state.nonValidHeaders;
@@ -248,7 +275,7 @@ class ExcelSheets extends Component {
             }
         }
         this.setState({nonValidHeaders:newNonValid},function(){
-            console.log(this.state.nonValidHeaders);
+           // console.log(this.state.nonValidHeaders);
         });
     }
     //Global checks are used to determine if there are any columns selected in the whole workbook
@@ -258,16 +285,32 @@ class ExcelSheets extends Component {
     decreaseGlobalChecks(){
         this.setState({globalValidHeaders:this.state.globalValidHeaders-1});
     }
+    selectAll(){
+        var checks = document.getElementsByClassName('MuiPrivateSwitchBase-input-90');
+        for(var i = 0; i <= checks.length; i++) {
+            if(checks[i] && (!checks[i].checked)) {
+                checks[i].click();
+            }
+        }
+    }
+    deselectAll(){
+        var checks = document.getElementsByClassName('MuiPrivateSwitchBase-input-90');
+        for(var i = 0; i <= checks.length; i++) {
+            if(checks[i] && (checks[i].checked)) {
+                checks[i].click();
+            }
+        }
+    }
     render() {
         return (
             <div>
-                <p style={{fontFamily:'"Didact Gothic", sans-serif'}}>Select the columns that you need to process and the corresponding process in the drop-down list box</p>
+                <p style={{fontFamily:'"Didact Gothic", sans-serif'}}>Select the columns that you need to process and the corresponding process in the drop-down list box <button onClick={(e)=>{this.selectAll()}} className={'button-selectall'}>select all</button><button onClick={(e)=>{this.deselectAll()}} className={'button-deselectall'}>deselect all</button></p>
                 <div  className='sheetSelection'>
                     {this.state.loaded?
                         <div>
                             {this.state.sheetNames.length > 0 ?
                                 <div  className="modelArea">
-                                    <Tabs onSelect={(index,lastIndex) => { this.saveSheet(lastIndex); this.setState({currentSheet:index})}}>
+                                    <Tabs style={this.state.exportPercent == 0?{opacity:'1'}:{opacity:'0.1'}} onSelect={(index,lastIndex) => { this.saveSheet(lastIndex); this.setState({currentSheet:index})}}>
                                         <TabList>
                                             {this.state.sheetNames.map((name, i) =>
                                                 <Tab key={i}>{name.label}
@@ -295,25 +338,34 @@ class ExcelSheets extends Component {
                                     <button className="button-exit" onClick={(e)=>{window.location.reload()}}>Cancel</button>
                                     {this.state.exportPercent == 0 ?
                                             <div className='button-container'>
+                                                <Tooltip
+                                                    content={((Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0))?'You need to select columns and completely define the actions for them':''}
+                                                    background={((Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0))?'#ff949473':'#ffffff00'}
+                                                    color={'red'}
+                                                    fontFamily='sans-serif'
+                                                >
                                                     <button
                                                         style={{float: 'right'}}
                                                         onClick={async () => {
-                                                            if (this.state.globalValidHeaders > 0) {
+                                                            if ((Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0)) {
+                                                                this.setState({disableNextButton:true});
                                                                 this.saveSheet(this.state.currentSheet);
                                                                 var me = this;
                                                                 this.generateExportSheet().then(function () {
+                                                                    me.setState({disableNextButton:false});
                                                                     me.props.jumpToStep(2);
                                                                 });
                                                             }
                                                         }}
                                                         type="button"
-                                                        className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) ? 'nextButton' : 'disabled nextButton'}
-                                                        disabled={(Object.keys(this.state.nonValidHeaders).length > 0) || (this.state.globalValidHeaders == 0)}
-                                                    >{}<i className="fas fa-step-forward"></i>
+                                                        className={(Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0) && (!this.state.disableNextButton) ? 'nextButton' : 'disabled nextButton'}
+                                                    >
+                                                        <i id="nexticcc" className="fas fa-step-forward"></i>
                                                     </button>
+                                                </Tooltip>
                                             </div>
                                         :
-                                            <div className="progress-bar blue shine">
+                                            <div style={{textAlign:'left'}} className="progress-bar blue shine">
                                                 <span style={{width:this.state.exportPercent+'%'}}></span>
                                             </div>
                                         }
