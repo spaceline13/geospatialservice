@@ -30,6 +30,12 @@ class Export extends Component {
         } else if (this.state.currentFormat=='geojson'){
             this.generateGeoJSON();
         }
+
+        //ANALYTICS
+        this.props.parent.googleAnalytics.event({
+            category: 'User',
+            action: 'EXPORTED DATASET'
+        });
     }
     generateCSV(){
         var s = XLSX.utils.sheet_to_csv(XLSX.utils.aoa_to_sheet(this.props.parent.state.outData));

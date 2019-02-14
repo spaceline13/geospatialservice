@@ -39,6 +39,12 @@ class Preview extends Component {
                             className={'nextButton'}
                             onClick={()=>{
                             this.props.parent.setState({outData:formatDataForXLSX(this.state)});
+                            //ANALYTICS
+                            this.props.parent.googleAnalytics.event({
+                                category: 'User',
+                                action: 'GOING TO EXPORT'
+                            });
+
                             this.props.jumpToStep(3);
                         }}><i className="fas fa-step-forward"></i>
                         </button>

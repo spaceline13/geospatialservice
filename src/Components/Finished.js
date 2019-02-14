@@ -16,6 +16,7 @@ class Finished extends Component {
         }
     };
     componentDidMount(){
+        this.notify();
         this.props.jumpToStep(5);
     }
     render() {
@@ -25,8 +26,6 @@ class Finished extends Component {
                     <span className='finishedSpan'>
                         <button
                             style={{opacity:0}}
-                            ref={(el)=>{this.clickDiv(el)}}
-                            onClick={this.notify}
                         >Notify !</button>
                         <center>
                             <ToastContainer
@@ -43,7 +42,7 @@ class Finished extends Component {
                             />
                         </center>
                     </span>
-                    <center style={{marginTop:'150px'}}>
+                    <center style={{marginTop:'200px'}}>
                         <button
                             className={'nextButton'}
                             onClick={(e)=>{window.location.reload()}}

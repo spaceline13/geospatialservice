@@ -5,7 +5,8 @@ import ExcelSheets from "./Components/ExcelSheets";
 import Export from "./Components/Export";
 import Finished from "./Components/Finished";
 import Preview from "./Components/Preview";
-import Header from './Components/Header/Header'
+import Header from './Components/Header/Header';
+import ReactGA from 'react-ga';
 
 class App extends Component {
     constructor(props) {
@@ -24,6 +25,10 @@ class App extends Component {
         this.generatedBoundariesColumn = null;
         this.globalGeonamesMatches=0;
         this.globalOSMMatches=0;
+
+        this.googleAnalytics = ReactGA;
+        this.googleAnalytics.initialize('UA-134551527-1');
+        this.googleAnalytics.pageview(window.location.pathname + window.location.search);
     };
     hideWelcomeText(){
         this.setState({showWelcomeText:false});

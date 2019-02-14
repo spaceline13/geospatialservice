@@ -350,6 +350,12 @@ class ExcelSheets extends Component {
                                                             if ((Object.keys(this.state.nonValidHeaders).length == 0) && (this.state.globalValidHeaders > 0)) {
                                                                 this.setState({disableNextButton:true});
                                                                 this.saveSheet(this.state.currentSheet);
+                                                                //ANALYTICS
+                                                                this.props.parent.googleAnalytics.event({
+                                                                    category: 'User',
+                                                                    action: 'Edited Dataset'
+                                                                });
+
                                                                 var me = this;
                                                                 this.generateExportSheet().then(function () {
                                                                     me.setState({disableNextButton:false});
