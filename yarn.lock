@@ -4922,6 +4922,19 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+geojson-mend@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/geojson-mend/-/geojson-mend-0.1.1.tgz#d93a3174a2e63c22328f8c1fd711f0efe70ce315"
+  integrity sha1-2ToxdKLmPCIyj4wf1xHw7+cM4xU=
+  dependencies:
+    geojson-validation "^0.1.6"
+    simplify-geometry "0.0.2"
+
+geojson-validation@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/geojson-validation/-/geojson-validation-0.1.6.tgz#b107945e56be1c7af0a6dd868a9bd706e52b5a2a"
+  integrity sha1-sQeUXla+HHrwpt2GipvXBuUrWio=
+
 geojson@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/geojson/-/geojson-0.5.0.tgz#3cd6c96399be65b56ee55596116fe9191ce701c0"
@@ -10235,6 +10248,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+simplify-geometry@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/simplify-geometry/-/simplify-geometry-0.0.2.tgz#63797e676eae96835ace02bcd27d3e1af544f49c"
+  integrity sha1-Y3l+Z26uloNazgK80n0+GvVE9Jw=
 
 singleline@1.0.x:
   version "1.0.0"

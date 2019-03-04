@@ -4,11 +4,7 @@
     <list default="true" id="82f1186f-30d7-4f51-9c0a-b1ca24c75276" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/ExcelSheets.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/ExcelSheets.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Components/Export.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Export.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Finished.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Finished.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/Preview.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/Preview.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -24,9 +20,9 @@
     <session id="455284691">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="33" />
+          <entry key="project.closed" value="34" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.1" value="16" />
+          <entry key="project.open.time.1" value="17" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="2" />
@@ -36,16 +32,16 @@
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="4" />
           <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="38" />
+          <entry key="project.opened" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="595" />
           <entry key="html" value="100" />
-          <entry key="js" value="21845" />
+          <entry key="js" value="22686" />
           <entry key="json" value="43" />
-          <entry key="txt" value="5" />
+          <entry key="txt" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -53,15 +49,15 @@
           <entry key="CSS" value="595" />
           <entry key="HTML" value="100" />
           <entry key="JSON" value="43" />
-          <entry key="JavaScript" value="21845" />
-          <entry key="PLAIN_TEXT" value="5" />
+          <entry key="JavaScript" value="22686" />
+          <entry key="PLAIN_TEXT" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="css" value="18" />
           <entry key="html" value="10" />
-          <entry key="js" value="92" />
+          <entry key="js" value="93" />
           <entry key="json" value="9" />
         </counts>
       </usages-collector>
@@ -70,13 +66,13 @@
           <entry key="CSS" value="18" />
           <entry key="HTML" value="10" />
           <entry key="JSON" value="9" />
-          <entry key="JavaScript" value="91" />
+          <entry key="JavaScript" value="92" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="ESLintLanguageService" value="38" />
+          <entry key="ESLintLanguageService" value="39" />
           <entry key="TypeScriptServerServiceImpl" value="1" />
         </counts>
       </usages-collector>
@@ -84,11 +80,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Components/Export.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2945">
-              <caret line="34" column="39" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
+            <state relative-caret-position="276">
+              <caret line="172" column="30" lean-forward="true" selection-start-line="172" selection-start-column="30" selection-end-line="172" selection-end-column="30" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -105,11 +101,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Components/Finished.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="137">
-              <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+              <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -130,7 +126,7 @@
         <entry file="file://$PROJECT_DIR$/src/Components/Preview.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="367">
-              <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="45" selection-end-column="31" />
+              <caret line="41" column="28" selection-start-line="41" selection-start-column="28" selection-end-line="45" selection-end-column="31" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -141,8 +137,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheets.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="357" selection-start-line="357" selection-end-line="357" />
+            <state relative-caret-position="1081">
+              <caret line="225" column="65" selection-start-line="225" selection-start-column="65" selection-end-line="225" selection-end-column="65" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -153,8 +149,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheetsComps/EditColumns.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2186">
-              <caret line="220" column="5" selection-start-line="220" selection-start-column="5" selection-end-line="220" selection-end-column="5" />
+            <state relative-caret-position="150">
+              <caret line="54" column="9" lean-forward="true" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -165,7 +161,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="473">
+            <state relative-caret-position="506">
               <caret line="30" column="28" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="28" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -186,8 +182,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="51" column="16" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+            <state relative-caret-position="1173">
+              <caret line="52" column="16" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -196,10 +192,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Godan</find>
-      <find>fetch</find>
-      <find>valida</find>
-      <find>typeof</find>
       <find>validate</find>
       <find>latColIsGeoNamesGenerated</find>
       <find>currentgeona</find>
@@ -226,6 +218,10 @@
       <find>console.log</find>
       <find>console</find>
       <find>http</find>
+      <find>createfetchUnlessCached</find>
+      <find>fetch</find>
+      <find>cachedFetch</find>
+      <find>checkbox</find>
     </findStrings>
     <replaceStrings>
       <replace>Actions</replace>
@@ -265,10 +261,10 @@
         <option value="$PROJECT_DIR$/src/Components/ExcelSheetsComps/EditColumns.js" />
         <option value="$PROJECT_DIR$/src/lib/dataFormatter.js" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/src/Components/ExcelSheets.js" />
         <option value="$PROJECT_DIR$/src/Components/Preview.js" />
-        <option value="$PROJECT_DIR$/src/Components/Export.js" />
         <option value="$PROJECT_DIR$/src/Components/Finished.js" />
+        <option value="$PROJECT_DIR$/src/Components/ExcelSheets.js" />
+        <option value="$PROJECT_DIR$/src/Components/Export.js" />
       </list>
     </option>
   </component>
@@ -289,7 +285,7 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1928" />
+    <option name="x" value="-2190" />
     <option name="y" value="1333" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -306,6 +302,29 @@
             <path>
               <item name="godan" type="b2602c69:ProjectViewProjectNode" />
               <item name="godan" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="godan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="godan" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="godan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="godan" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="godan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="godan" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="godan" type="b2602c69:ProjectViewProjectNode" />
+              <item name="godan" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Components" type="462c0819:PsiDirectoryNode" />
+              <item name="ExcelSheetsComps" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -401,7 +420,8 @@
       <workItem from="1547019884355" duration="4226000" />
       <workItem from="1547645040014" duration="1696000" />
       <workItem from="1547710732273" duration="715000" />
-      <workItem from="1550134751774" duration="5055000" />
+      <workItem from="1550134751774" duration="5089000" />
+      <workItem from="1551692305786" duration="6895000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1542624166872</created>
@@ -452,11 +472,18 @@
       <option name="project" value="LOCAL" />
       <updated>1547722369068</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added google analytics">
+      <created>1550148000847</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1550148000847</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="223853000" />
+    <option name="totallyTimeSpent" value="230782000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1928" y="1333" width="1936" height="1056" extended-state="6" />
@@ -491,7 +518,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="2" />
-    <option name="LAST_COMMIT_MESSAGE" value="2" />
+    <MESSAGE value="added google analytics" />
+    <option name="LAST_COMMIT_MESSAGE" value="added google analytics" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Components/MultistepEnricherComps/RDFSheet/ClassTypes.js" />
@@ -587,17 +615,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Components/UploadXL.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/lib/dataFormatter.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
           <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="30" column="28" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -610,35 +641,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="51" column="16" selection-start-line="51" selection-start-column="16" selection-end-line="51" selection-end-column="16" />
+        <state relative-caret-position="1173">
+          <caret line="52" column="16" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheetsComps/EditColumns.js">
+    <entry file="file://$PROJECT_DIR$/src/Components/Finished.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2186">
-          <caret line="220" column="5" selection-start-line="220" selection-start-column="5" selection-end-line="220" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="473">
-          <caret line="30" column="28" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheets.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="357" selection-start-line="357" selection-end-line="357" />
+        <state relative-caret-position="137">
+          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -648,7 +659,34 @@
     <entry file="file://$PROJECT_DIR$/src/Components/Preview.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="367">
-          <caret line="41" column="28" lean-forward="true" selection-start-line="41" selection-start-column="28" selection-end-line="45" selection-end-column="31" />
+          <caret line="41" column="28" selection-start-line="41" selection-start-column="28" selection-end-line="45" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Components/UploadXL.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheets.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1081">
+          <caret line="225" column="65" selection-start-line="225" selection-start-column="65" selection-end-line="225" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Components/ExcelSheetsComps/EditColumns.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="54" column="9" lean-forward="true" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -657,18 +695,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Components/Export.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2945">
-          <caret line="34" column="39" selection-start-line="34" selection-start-column="39" selection-end-line="34" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Components/Finished.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="18" column="22" lean-forward="true" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
+        <state relative-caret-position="276">
+          <caret line="172" column="30" lean-forward="true" selection-start-line="172" selection-start-column="30" selection-end-line="172" selection-end-column="30" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>

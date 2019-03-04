@@ -3,6 +3,7 @@ import Select from "react-simpler-select";
 import XLSX from "xlsx";
 import GeoJSON from 'geojson';
 import fileDownload from 'js-file-download';
+import geomend from 'geojson-mend';
 
 class Export extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class Export extends Component {
         this.state ={
             formats:[{label:'XLS', value:'xls'},{label:'CSV', value:'csv'}],
             currentFormat:'',
+            highResolution:false,
             loading:false
         };
         if(this.enableGeoJSON){
@@ -21,6 +23,7 @@ class Export extends Component {
         this.generateCSV = this.generateCSV.bind(this);
         this.selectFormat = this.selectFormat.bind(this);
         this.loader = this.loader.bind(this);
+        this.setResolution = this.setResolution.bind(this);
     };
     export (){
         if(this.state.currentFormat=='xls'){
@@ -122,13 +125,14 @@ class Export extends Component {
             for (var line=0; line<output.length; line++){
                 var newFeature = {
                     type: 'Feature',
-                    geometry: output[line][this.props.parent.generatedBoundariesColumn], //geometry polygon etc
+                    geometry: this.state.highResolution?output[line][this.props.parent.generatedBoundariesColumn]:geomend.nReduce(geomend.nDecimals(output[line][this.props.parent.generatedBoundariesColumn],6),0.005), //geometry polygon etc   reduced resolution
                     properties: {}
                 };
-                //add the columns properties (rest columns that do not contain coords
+                //add the columns properties (rest columns that do not contain coords)
                 for(var col in output[0]){
-                   // if(col!=this.props.parent.generatedBoundariesColumn)
-                   //     newFeature.properties[output[0]][col] = output[line][col];
+                    if(col!==this.props.parent.generatedBoundariesColumn){
+                        newFeature.properties[col] = output[line][col];
+                    }
                 }
                 geojson.features.push(newFeature);
             }
@@ -145,6 +149,9 @@ class Export extends Component {
     selectFormat(format){
         this.setState({currentFormat:format});
     }
+    setResolution(value){
+        this.setState({highResolution:value});
+    }
     render() {
         return (
             <div>
@@ -159,6 +166,13 @@ class Export extends Component {
                             onChange={(value)=>{this.selectFormat(value)}}
                         />
                     </span>
+                    {(this.state.currentFormat == 'geojson') &&
+                    <center>
+                        <div style={{maxWidth:'900px',fontFamily:'sans-serif',marginTop:'30px'}}>
+                            <input type="checkbox" name="resolution" value="high" onChange={(e)=>{this.setResolution(e.target.checked)}}/> High Resolution Geometry <i style={{color:'grey'}}>(Warning: Checking this might result in huge file sizes, unusable in some other tools)</i>
+                        </div>
+                    </center>
+                    }
                     {(!this.enableGeoJSON)&&
                         <center>
                             <div style={{marginTop: '50px',width: '800px',color: '#ffa9a9', fontFamily:'\'Didact Gothic\', sans-serif'}}>
